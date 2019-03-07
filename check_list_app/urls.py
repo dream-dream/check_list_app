@@ -20,7 +20,7 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
-    path('input/', views.Input, name='Input'),
-    path('list/', views.ListOfBill, name='ListOfBill'),
-    path('list_detail', views.ListDetailOfBill, name='ListDetailOfBill'),
+    path('input/', views.input, name='input'),
+    path('get_list/', views.get_list, name='get_list'),
+    path('get_detail/', views.get_detail, name='get_detail'),
 ]
