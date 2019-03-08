@@ -10,6 +10,11 @@ finally_response_data = {"code": 500, "msg": "注册失败，请重试"}
 
 
 def login(request):
+    """
+    登陆
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('pwd')
@@ -25,6 +30,11 @@ def login(request):
 
 
 def register(request):
+    """
+    注册
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         username = request.POST.get("username")
         # todo checkout this field
@@ -77,6 +87,7 @@ def register(request):
         except Exception as e:
             print(str(e))
             return JsonResponse(finally_response_data)
+        # 这里是用了forms组件，跟前端强耦合了，所以弃用
         # try:
         #     re_form_item = RegisterForm(request.POST)
         # except Exception as e:
@@ -107,6 +118,11 @@ def register(request):
 
 
 def input(request):
+    """
+    提交记账信息
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         money = request.POST.get("money")
         remarks = request.POST.get("remarks")
@@ -123,6 +139,11 @@ def input(request):
 
 
 def get_detail(request):
+    """
+    获取指定时间内的账单信息
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
         user_id = request.session.get("id")
         start_time = request.GET.get("start_time")
@@ -147,7 +168,42 @@ def get_detail(request):
 
 
 def get_list(request):
+    """
+    获取指定时间内的账单总金额，并且把每天的总额计算出来
+    :param request:
+    :return:
+    """
     if request.method == 'GET':
+        user_id = request.session.get("id")
         start_time = request.GET.get("start_time")
         end_time = request.GET.get("end_time")
-    ...
+        # get data what we want from database
+        try:
+            sum_query_set = BillDetail.objects.filter(user_id=user_id).filter(
+                Q(
+                    Q(time__gt=start_time) & Q(time__lt=end_time)
+                ) |
+                Q(time=start_time) | Q(time=end_time)
+            ).values("time", "money")
+        except Exception as e:
+            print(str(e))
+            return JsonResponse("database was wrong, try again")
+        # total the money that transaction on the same day
+        sum_money_dict = {}
+        start_num = 0
+        for query_object in sum_query_set:
+            if query_object["time"].date() not in sum_money_dict:
+                sum_money_dict[query_object["time"].date()] = query_object["money"]
+            else:
+                sum_money_dict[query_object["time"].date()] += query_object["money"]
+            start_num += query_object["money"]
+        #  integrate data format
+        finally_data_format = []
+        for item in sum_money_dict.items():
+            each_dict = {}
+            each_dict["time"] = item[0]
+            each_dict["money"] = item[1]
+            finally_data_format.append(each_dict)
+        finally_data_format.append({"total_money": start_num})
+        return JsonResponse(finally_data_format)
+
