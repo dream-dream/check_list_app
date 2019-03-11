@@ -2,9 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>login</title>
 </head>
 <body>
 
+<div class="container col-md-offset-3 col-md-6">
+    <div class="row">
+        <form class="form-horizontal" action="" method="post">
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2">username</label>
+                <div class="col-sm-10"><input id="name" class="form-control" type="text" name="user"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="pwd" class="col-sm-2">password</label>
+                <div class="col-sm-10"><input type="password" class="form-control" id="pwd" name="pwd"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button value="submit" type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+    $(".btn").click(function () {
+        $.ajax({
+            url:"login/",
+            type:"POST",
+            dataType:"json",
+            headers:{"X-CSRFToken":$.cookie('cstftoken')},
+            data:{username:$("#name").val(), pwd:$("#pwd").val()},
+            success:function (data) {
+                var data = JSON.parse(data);
+                console.log("congratulations!")
+            },
+            error:function (data) {
+                console.log(data)
+            }
+        })
+    })
+</script>
 </body>
 </html>

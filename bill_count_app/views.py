@@ -35,50 +35,78 @@ def register(request):
     :param request:
     :return:
     """
+    data = {}
     if request.method == 'POST':
         username = request.POST.get("username")
+        phone_num = request.POST.get("phone_num")
+        pwd = request.POST.get("pwd")
+        re_pwd = request.POST.get("re_pwd")
+        gender = request.POST.get("gender")  # set checkbox
+        age = request.POST.get("age")
+        job = request.POST.get("job")
+        salary = request.POST.get("salary")
+        data["username"] = username
+        data["phone_num"] = phone_num
+        data["pwd"] = pwd
+        data["re_pwd"] = re_pwd
+        data["gender"] = gender
+        data["age"] = age
+        data["job"] = job
+        data["salary"] = salary
         # todo checkout this field
         is_username = User.objects.filter(username=username).exists()
         if is_username:
             finally_response_data["code"] = 300
             finally_response_data["msg"] = "该用户名已存在，请重试"
+            data["username"] = ""
+            data["pwd"] = ""
+            data["re_pwd"] = ""
+            finally_response_data["data"] = data
             return JsonResponse(finally_response_data)
-        if len(username) < 5:
+        if len(username) < 5 or len(username) > 15:
             finally_response_data["code"] = 305
-            finally_response_data["msg"] = "用户名最少不低于5位，请重试"
+            finally_response_data["msg"] = "用户名最少不低于5位，最多不高于15位,请重试"
+            data["username"] = ""
+            data["pwd"] = ""
+            data["re_pwd"] = ""
+            finally_response_data["data"] = data
             return JsonResponse(finally_response_data)
-        if len(username) > 15:
-            finally_response_data["code"] = 315
-            finally_response_data["msg"] = "用户名最多不高于15位，请重试"
-            return JsonResponse(finally_response_data)
-        phone_num = request.POST.get("phone_num")
+
         # todo use re model to checkout this field
         if phone_num.isdigt():
             phone_num = re.findall('^1[345789]\d{9}$', phone_num)
             if not phone_num:
                 finally_response_data["code"] = 405
                 finally_response_data["msg"] = "手机号输入有误，请重试"
+                data["phone_num"] = ""
+                data["pwd"] = ""
+                data["re_pwd"] = ""
+                finally_response_data["data"] = data
                 return JsonResponse(finally_response_data)
         else:
             finally_response_data["code"] = 400
             finally_response_data["msg"] = "格式不对，必须是纯数字，请重试"
+            data["phone_num"] = ""
+            data["pwd"] = ""
+            data["re_pwd"] = ""
+            finally_response_data["data"] = data
             return JsonResponse(finally_response_data)
-        pwd = request.POST.get("pwd")
-        re_pwd = request.POST.get("re_pwd")
         # todo checkout the power of pwd, got digit & character & symbol
         if pwd != re_pwd:
             finally_response_data["code"] = 410
             finally_response_data["msg"] = "两次密码不一致，请重新输入"
+            data["pwd"] = ""
+            data["re_pwd"] = ""
+            finally_response_data["data"] = data
             return JsonResponse(finally_response_data)
         pwd = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
         if not pwd:
             finally_response_data["code"] = 400
             finally_response_data["msg"] = "格式不对，以字母开头，包含数字字母下划线，最短6位，最长15位"
+            data["pwd"] = ""
+            data["re_pwd"] = ""
+            finally_response_data["data"] = data
             return JsonResponse(finally_response_data)
-        gender = request.POST.get("gender")  # set checkbox
-        age = request.POST.get("age")  # set checkbox
-        job = request.POST.get("job")
-        salary = request.POST.get("salary")  # set checkbox
         try:
             user_object = User.objects.create(username=username, phone_num=phone_num, pwd=pwd)
             user_detail_obj = UserDetail.objects.create(gender=gender, age=age, job=job, salary=salary)
@@ -87,6 +115,10 @@ def register(request):
         except Exception as e:
             print(str(e))
             return JsonResponse(finally_response_data)
+    finally_response_data["code"] = 200
+    finally_response_data["msg"] = "congratulations"
+    return JsonResponse(data)
+    # return redirect('input/')
         # 这里是用了forms组件，跟前端强耦合了，所以弃用
         # try:
         #     re_form_item = RegisterForm(request.POST)
@@ -126,7 +158,7 @@ def input(request):
     if request.method == 'POST':
         money = request.POST.get("money")
         remarks = request.POST.get("remarks")
-        this_moment = request.POST.get("time")
+        this_moment = request.POST.get("time")  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
         user_id = request.session.get("id")
         try:
             bill_obj = BillDetail.objects.filter(user_id=user_id)
@@ -136,7 +168,9 @@ def input(request):
             finally_response_data["code"] = 500
             finally_response_data["msg"] = "提交失败，请重试"
             return JsonResponse(finally_response_data)
-
+    finally_response_data["code"] = 200
+    finally_response_data["msg"] = "提交成功"
+    return JsonResponse(finally_response_data)
 
 def get_detail(request):
     """

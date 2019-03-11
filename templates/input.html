@@ -2,9 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>Title</title>
 </head>
 <body>
+
+<div class="container col-md-offset-3 col-md-6">
+    <div class="row">
+        <form class="form-horizontal" action="" method="">
+
+            <div class="form-group">
+                <label for="money" class="col-sm-2">money</label>
+                <div class="col-sm-10"><input id="money" class="form-control" type="text" name="money"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="remarks" class="col-sm-2">remarks</label>
+                <div class="col-sm-10"><input type="text" class="form-control" id="remarks" name="remarks"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button value="submit" type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{#<script src="{% static 'JS/jquery-3.1.1.js' %}">#}
+{#<script src="/static/js/jquery-3.2.1.min.js">#}
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+{#    对于输入的内容在前端也可以进行校验，看你自己选择用什么方式#}
+    $(".btn").click(function () {
+        var time = new Date();
+        year = time.getFullYear();
+        month = time.getMonth();
+        date = time.getDate();
+        hour = time.getHours();
+        minute = time.getMinutes();
+        second = time.getMinutes();
+        $.ajax({
+            url:"input/",
+            dataType:"json",
+            type:"POST",
+            data:{
+                money:$("#money").val(),
+                remarks:$("#remarks").val(),
+                time:year+":"+month+":"+date+":"+hour+":"+minute+":"+second,
+                csrfmiddlewaretoken:'{{csrf_token}}',
+            },
+            success:function (data) {
+                console.log("congratulations")
+            },
+            error:function (data) {
+                console.log(data)
+            }
+
+        })
+    })
+</script>
 
 </body>
 </html>

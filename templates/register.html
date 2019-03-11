@@ -2,9 +2,116 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>Title</title>
 </head>
 <body>
+
+<div class="container col-md-offset-3 col-md-6">
+    <div class="row">
+        <form class="form-horizontal" action="" method="post">
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2">username</label>
+                <div class="col-sm-10"><input id="name" class="form-control" type="text" name="user" placeholder="用户名">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pwd" class="col-sm-2">password</label>
+                <div class="col-sm-10"><input type="password" class="form-control" id="pwd" name="pwd" placeholder="密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2">re_password</label>
+                <div class="col-sm-10"><input id="re_password" class="form-control" type="text" name="re_password"
+                                              placeholder="确认密码"></div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2">phone_num</label>
+                <div class="col-sm-10"><input id="phone_num" class="form-control" type="text" name="phone_num"
+                                              placeholder="手机号"></div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2">gender</label>
+                <div class="col-sm-3">
+                    <input id="gender" type="radio" name="gender" value="male">&nbspMale &nbsp&nbsp
+                    <input id="gender" type="radio" name="gender" value="female">&nbspFemale
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2">age</label>
+                <div class="col-sm-3"><input id="age" class="form-control" type="text" name="age" placeholder="年龄">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2">job</label>
+                <div class="col-sm-10"><input id="job" class="form-control" type="text" name="job" placeholder="职业">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-2">salary</label>
+                <div class="col-sm-3">
+                    <select name="salary" id="salary" class="form-control">
+                        <option value="<2000"><2000</option>
+                        <option value="2000-5000">2000-5000</option>
+                        <option value="5000-8000">5000-8000</option>
+                        <option value="8000-10000">8000-10000</option>
+                        <option value="10000<">10000<</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button value="submit" type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+    $(".btn").click(function () {
+        $.ajax({
+            url: "register/",
+            type: "POST",
+            dataType: "json",
+            data: {
+                username: $("#name").val(),
+                pwd: $("#pwd").val(),
+                re_pwd: $("#re_password").val(),
+                phone_num: $("#phone_num").val(),
+                gender: $("#gender").val(),
+                age: $("#age").val(),
+                job: $("#job").val(),
+                salary: $("#salary").val(),
+                "csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val()
+            },
+            success: function (data) {
+                var data = JSON.parse(data);
+                console.log("congratulations!")
+            },
+            error: function (data) {
+                var data = JSON.parse(data);
+                $("#name").val(data["data"]["username"]);
+                $("#pwd").val(data["data"]["phone_num"]);
+                $("#re_password").val(data["data"]["pwd"]);
+                $("#phone_num").val(data["data"]["re_pwd"]);
+                $("#gender").val(data["data"]["gender"]);
+                $("#age").val(data["data"]["age"]);
+                $("#job").val(data["data"]["job"]);
+                $("#salary").val(data["data"]["salary"]);
+                console.log(data)
+            }
+        })
+    })
+</script>
 
 </body>
 </html>

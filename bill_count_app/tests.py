@@ -55,14 +55,14 @@ object_datetime = datetime.datetime.now()
 #     print(begin_num)
 
 
-list_dict = [{'time': '2012', 'money': 12}, {'time': '2012', 'money': 90}, {'time': '2090', 'money': 31},
-             {'time': '2090', 'money': 14}]
-dic = {}
-for item in list_dict:
-    if item['time'] not in dic:
-        dic[item['time']] = item['money']
-    else:
-        dic[item['time']] += item['money']
+# list_dict = [{'time': '2012', 'money': 12}, {'time': '2012', 'money': 90}, {'time': '2090', 'money': 31},
+#              {'time': '2090', 'money': 14}]
+# dic = {}
+# for item in list_dict:
+#     if item['time'] not in dic:
+#         dic[item['time']] = item['money']
+#     else:
+#         dic[item['time']] += item['money']
         # print(dic[item['time']])
 # print(dic)
 # finally_li = []
@@ -77,3 +77,9 @@ for item in list_dict:
 #     for each_num in value:
 #         begin_num += each_num
 #     print(begin_num)
+
+dic = {'name':'jinxin','age':20,'teacher':'egon'}
+# del dic["name"]
+dic.pop('name')
+print(dic)
+# print(dic.pop("name"))
