@@ -3,16 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <title>Title</title>
+    <title>GetDetail</title>
 </head>
 <body>
 
-{#<script src="{% static 'JS/jquery-3.1.1.js' %}">#}
-{#<script src="/static/js/jquery-3.2.1.min.js">#}
+
+<div class="panel panel-default">
+    <div class="panel-heading">流水明细</div>
+    <div class="container col-md-offset-6 col-md-6">
+        <div class="row">
+            <form class="form-horizontal" action="" method="">
+
+                <div class="form-group">
+                    <label for="money" class="col-sm-2">start_time</label>
+                    <div class="col-sm-3"><input id="start_time" class="form-control" type="text" name="money"></div>
+                    <label for="remarks" class="col-sm-2">end_time</label>
+                    <div class="col-sm-3"><input type="text" class="form-control" id="end_time" name="remarks"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table">
+        <th>time</th>
+        <th>remarks</th>
+        <th>money</th>
+        <tr>
+            <td>具体时间年月日 A</td>
+            <td>备注信息</td>
+            <td>200</td>
+        </tr>
+
+    </table>
+</div>
+
 
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+<script>
+    $.ajax({
+        url: "get_detail/",
+        type: "POST",
+        dataType: "json",
+        headers: {"X-CSRFToken": $.cookie('cstftoken')},
+        data: {
+            start_time: $("#start_time").val(),
+            end_time: $("#end_time").val(),
+        },
+        success: function (data) {
+            data.each(function () {
+                let tr_tag = document.createElement("tr");
+                let td_time = document.createElement("td");
+                let td_remarks = document.createElement("td");
+                let td_money = document.createElement("td");
+                $(tr_tag).appendTo("table");
+                $(td_time).text($(this)["time"]);
+                $(td_remarks).text($(this)["remarks"]);
+                $(td_money).text($(this)["money"]);
+                $(tr_tag).append(td_time);
+                $(tr_tag).append(td_remarks);
+                $(tr_tag).append(td_money);
+            })
+        },
+        error: function (errorMsg) {
+            errorMsg = JSON.parse(errorMsg);
+            console.log(errorMsg)
+        }
+    })
+</script>
 
 </body>
 </html>

@@ -207,10 +207,10 @@ def get_list(request):
     :param request:
     :return:
     """
-    if request.method == 'GET':
+    if request.method == 'POST':
         user_id = request.session.get("id")
-        start_time = request.GET.get("start_time")
-        end_time = request.GET.get("end_time")
+        start_time = request.POST.get("start_time")
+        end_time = request.POST.get("end_time")
         # get data what we want from database
         try:
             sum_query_set = BillDetail.objects.filter(user_id=user_id).filter(
@@ -240,4 +240,3 @@ def get_list(request):
             finally_data_format.append(each_dict)
         finally_data_format.append({"total_money": start_num})
         return JsonResponse(finally_data_format)
-

@@ -3,25 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <title>Title</title>
+
+    <title>GetList</title>
 </head>
 <body>
 
 <div class="panel panel-default">
     <div class="panel-heading">流水每日金额汇总</div>
+    <div class="container col-md-offset-6 col-md-6">
+        <div class="row">
+            <form class="form-horizontal" action="" method="">
+
+                <div class="form-group">
+                    <label for="money" class="col-sm-2">start_time</label>
+                    <div class="col-sm-3"><input id="start_time" class="form-control" type="text" name="money"></div>
+                    <label for="remarks" class="col-sm-2">end_time</label>
+                    <div class="col-sm-3"><input type="text" class="form-control" id="end_time" name="remarks"></div>
+                </div>
+            </form>
+        </div>
+    </div>
     <table class="table">
-        <th>remarks</th><th>money </th>
-{#        这里要用到for循环#}
-        <tr><td>产品 A</td><td>200</td></tr>
+        <th>time</th>
+        <th>money</th>
+        <tr class="item">
+            <td class="time">时间 年月日 A</td>
+            <td class="money">200</td>
+        </tr>
 
     </table>
 </div>
-{#<script src="{% static 'JS/jquery-3.1.1.js' %}">#}
-{#<script src="/static/js/jquery-3.2.1.min.js">#}
 
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
+    $.ajax({
+        url: 'get_list/',
+        type: 'POST',
+        dataType: 'json',
+        headers: {"X-CSRFToken": $.cookie('cstftoken')},
+        data: {
+            start_time: $("#start_time").val(),
+            end_time: $("#end_time").val(),
+        },
+        success: function (data) {
+            data.each(function () {
+                let tr_tag = document.createElement("tr");
+                let td_time_tag = document.createElement("td");
+                let td_money_tag = document.createElement("td");
+                $(tr_tag).appendTo("table");
+                $(td_time_tag).text($(this)["time"]);
+                $(td_money_tag).text($(this)["money"]);
+                $(tr_tag).append(td_time_tag);
+                $(tr_tag).append(td_money_tag);
+            });
+
+        },
+        error: function (data) {
+            data = JSON.parse(data);
+            console.log(data)
+        }
+    })
 
 </script>
 

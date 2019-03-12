@@ -42,7 +42,7 @@
             headers:{"X-CSRFToken":$.cookie('cstftoken')},
             data:{username:$("#name").val(), pwd:$("#pwd").val()},
             success:function (data) {
-                var data = JSON.parse(data);
+                data = JSON.parse(data);
                 console.log("congratulations!")
             },
             error:function (data) {
