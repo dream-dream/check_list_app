@@ -24,9 +24,10 @@ def login(request):
             redirect('input/')
         else:
             finally_response_data = {"code": 500, "msg": "sorry, login failed, please try again"}
-            return JsonResponse(finally_response_data)
+            return HttpResponse(finally_response_data)
     else:
         redirect('login/')
+    return HttpResponse("hello")
 
 
 def register(request):
@@ -191,14 +192,14 @@ def get_detail(request):
             ).values("time", "remarks", "money")
         except Exception as e:
             print(str(e))
-            return JsonResponse("database was wrong, try again")
+            return HttpResponse("database was wrong, try again")
         detail_query_dict = {}
         detail_query_dict[user_id] = detail_query_set
         begin_num = 0
         for query_object in detail_query_set:
             begin_num += query_object.money
         detail_query_dict[sum] = begin_num
-        return JsonResponse(detail_query_dict)
+        return HttpResponse(detail_query_dict)
 
 
 def get_list(request):
@@ -239,4 +240,5 @@ def get_list(request):
             each_dict["money"] = item[1]
             finally_data_format.append(each_dict)
         finally_data_format.append({"total_money": start_num})
-        return JsonResponse(finally_data_format)
+        return HttpResponse(finally_data_format)
+    return HttpResponse("hello there")

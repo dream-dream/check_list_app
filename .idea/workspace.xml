@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7b9fbee-881f-47e2-b0bc-9933004f07e7" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/static/js/handle_time.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bill_count_app/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/bill_count_app/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bill_count_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/bill_count_app/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/check_list_app/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/check_list_app/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/get_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/get_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/get_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/get_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/input.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/input.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -45,20 +43,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bill_count_app/tests.py">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/check_list_app/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="82" column="15" lean-forward="true" selection-start-line="82" selection-start-column="15" selection-end-line="82" selection-end-column="15" />
+            <state relative-caret-position="300">
+              <caret line="20" column="15" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
+              <folding>
+                <element signature="e#638#670#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="get_list.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="get_list.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/get_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="53" column="44" lean-forward="true" selection-start-line="53" selection-start-column="44" selection-end-line="53" selection-end-column="44" />
+            <state relative-caret-position="229">
+              <caret line="40" column="36" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -66,8 +67,8 @@
       <file leaf-file-name="input.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/input.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="41" column="36" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
+            <state relative-caret-position="313">
+              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -81,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="705">
-              <caret line="47" column="35" lean-forward="true" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
+            <state relative-caret-position="249">
+              <caret line="20" column="118" selection-start-line="20" selection-start-column="118" selection-end-line="20" selection-end-column="118" />
             </state>
           </provider>
         </entry>
@@ -93,8 +94,8 @@
       <file leaf-file-name="register.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/register.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1620">
-              <caret line="108" column="57" lean-forward="true" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
+            <state relative-caret-position="363">
+              <caret line="81" column="40" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -102,8 +103,8 @@
       <file leaf-file-name="get_detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/get_detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
+            <state relative-caret-position="252">
+              <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -111,10 +112,11 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bill_count_app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="221" column="30" lean-forward="true" selection-start-line="221" selection-start-column="30" selection-end-line="221" selection-end-column="30" />
+            <state relative-caret-position="-1118">
+              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
               <folding>
                 <element signature="e#0#59#0" expanded="true" />
+                <element signature="e#4547#4574#0" />
               </folding>
             </state>
           </provider>
@@ -150,20 +152,20 @@
         <option value="$PROJECT_DIR$/bill_count_app/forms.py" />
         <option value="$PROJECT_DIR$/bill_count_app/form.py" />
         <option value="$PROJECT_DIR$/check_list_app/__init__.py" />
-        <option value="$PROJECT_DIR$/check_list_app/urls.py" />
         <option value="$PROJECT_DIR$/bill_count_app/models.py" />
         <option value="$PROJECT_DIR$/templates/bill_detail.html" />
         <option value="$PROJECT_DIR$/bill_count_app/tests.py" />
-        <option value="$PROJECT_DIR$/templates/register.html" />
         <option value="$PROJECT_DIR$/check_list_app/settings.py" />
-        <option value="$PROJECT_DIR$/bill_count_app/views.py" />
         <option value="$PROJECT_DIR$/bill_count_app/test.html" />
-        <option value="$PROJECT_DIR$/templates/get_list.html" />
-        <option value="$PROJECT_DIR$/templates/get_detail.html" />
         <option value="$PROJECT_DIR$/static/js/jquery.datetimepicker.js" />
         <option value="$PROJECT_DIR$/static/js/handle_time.js" />
-        <option value="$PROJECT_DIR$/templates/input.html" />
+        <option value="$PROJECT_DIR$/check_list_app/urls.py" />
+        <option value="$PROJECT_DIR$/bill_count_app/views.py" />
+        <option value="$PROJECT_DIR$/templates/register.html" />
         <option value="$PROJECT_DIR$/templates/login.html" />
+        <option value="$PROJECT_DIR$/templates/input.html" />
+        <option value="$PROJECT_DIR$/templates/get_detail.html" />
+        <option value="$PROJECT_DIR$/templates/get_list.html" />
       </list>
     </option>
   </component>
@@ -196,6 +198,16 @@
             <path>
               <item name="check_list_app" type="b2602c69:ProjectViewProjectNode" />
               <item name="check_list_app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="check_list_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="check_list_app" type="462c0819:PsiDirectoryNode" />
+              <item name="check_list_app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="check_list_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="check_list_app" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -300,15 +312,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="786" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32980332" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32882884" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34084085" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32980332" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.45795795" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -389,6 +402,7 @@
           <caret line="160" column="89" selection-start-line="160" selection-start-column="89" selection-end-line="160" selection-end-column="89" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#4547#4574#0" />
           </folding>
         </state>
       </provider>
@@ -430,6 +444,7 @@
           <caret line="171" column="30" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="30" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#4547#4574#0" />
           </folding>
         </state>
       </provider>
@@ -546,16 +561,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/check_list_app/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="19" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="19" />
-          <folding>
-            <element signature="e#638#670#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/jquery.datetimepicker.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -610,48 +615,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/views.py">
+    <entry file="file://$PROJECT_DIR$/check_list_app/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="221" column="30" lean-forward="true" selection-start-line="221" selection-start-column="30" selection-end-line="221" selection-end-column="30" />
+        <state relative-caret-position="300">
+          <caret line="20" column="15" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
           <folding>
-            <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#638#670#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/get_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/get_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="53" column="44" lean-forward="true" selection-start-line="53" selection-start-column="44" selection-end-line="53" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/input.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="36" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/register.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1620">
-          <caret line="108" column="57" lean-forward="true" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="47" column="35" lean-forward="true" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
+        <state relative-caret-position="249">
+          <caret line="20" column="118" selection-start-line="20" selection-start-column="118" selection-end-line="20" selection-end-column="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/register.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="81" column="40" selection-start-line="81" selection-start-column="40" selection-end-line="81" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bill_count_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1118">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#4547#4574#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/input.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/get_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/get_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="40" column="36" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
         </state>
       </provider>
     </entry>

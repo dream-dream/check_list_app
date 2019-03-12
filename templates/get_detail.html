@@ -41,13 +41,14 @@
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
     $.ajax({
-        url: "get_detail/",
+        url: "http://127.0.0.1:8000/get_detail/",
         type: "POST",
         dataType: "json",
-        headers: {"X-CSRFToken": $.cookie('cstftoken')},
+        headers: Access - Control - Allow - Origin["*"],
         data: {
             start_time: $("#start_time").val(),
             end_time: $("#end_time").val(),
+            csrfmiddlewaretoken: '{{csrf_token}}',
         },
         success: function (data) {
             data.each(function () {
