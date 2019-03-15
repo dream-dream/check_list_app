@@ -41,7 +41,6 @@
         url: 'http://127.0.0.1:8000/get_list/',
         type: 'POST',
         dataType: 'json',
-        headers:Access-Control-Allow-Origin["*"],
         data: {
             start_time: $("#start_time").val(),
             end_time: $("#end_time").val(),
@@ -61,7 +60,6 @@
 
         },
         error: function (data) {
-            data = JSON.parse(data);
             console.log(data)
         }
     })

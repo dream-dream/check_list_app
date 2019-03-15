@@ -78,8 +78,20 @@ object_datetime = datetime.datetime.now()
 #         begin_num += each_num
 #     print(begin_num)
 
-dic = {'name':'jinxin','age':20,'teacher':'egon'}
+# dic = {'name':'jinxin','age':20,'teacher':'egon'}
 # del dic["name"]
-dic.pop('name')
-print(dic)
+# dic.pop('name')
+# print(dic)
 # print(dic.pop("name"))
+#
+# int_obj = ""
+# if int_obj.isdigit():
+#     print(int_obj)
+# elif not int_obj.isdigit() and "":
+#     print('int_obj',int_obj, type(int_obj))
+
+l = [123, '123']
+obj = '123'
+for i in l:
+    if obj == i:
+        print(l.index(i))

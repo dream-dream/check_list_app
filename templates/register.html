@@ -10,7 +10,6 @@
 <div class="container col-md-offset-3 col-md-6">
     <div class="row">
         <form class="form-horizontal" action="" method="">
-
             <div class="form-group">
                 <label for="name" class="col-sm-2">username</label>
                 <div class="col-sm-10"><input id="name" class="form-control" type="text" name="user" placeholder="用户名">
@@ -25,7 +24,7 @@
 
             <div class="form-group">
                 <label for="name" class="col-sm-2">re_password</label>
-                <div class="col-sm-10"><input id="re_password" class="form-control" type="text" name="re_password"
+                <div class="col-sm-10"><input id="re_password" class="form-control" type="password" name="re_password"
                                               placeholder="确认密码"></div>
             </div>
             <div class="form-group">
@@ -35,9 +34,9 @@
             </div>
             <div class="form-group">
                 <label for="name" class="col-sm-2">gender</label>
-                <div class="col-sm-3">
-                    <input id="gender" type="radio" name="gender" value="male">&nbspMale &nbsp&nbsp
-                    <input id="gender" type="radio" name="gender" value="female">&nbspFemale
+                <div class="col-sm-3" id="gender">
+                    <input id="male" type="radio" name="gender" value="male">&nbspMale &nbsp&nbsp
+                    <input id="female" type="radio" name="gender" value="female">&nbspFemale
                 </div>
             </div>
             <div class="form-group">
@@ -77,38 +76,61 @@
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
+    let female = $("#female");
+    let male = $("#male");
+    male.click(function () {
+            $(this).attr("checked", "checked");
+            if (male.prop("checked")) {
+                female.removeAttr("checked")
+            }
+        }
+    );
+
+    female.click(function () {
+        $(this).attr("checked", "checked");
+        if (female.prop("checked")) {
+            male.removeAttr("checked")
+        }
+    });
+
+    function get_gender() {
+        if (male.prop("checked")) {
+            return male.val()
+        } else if (female.prop("checked")) {
+            return female.val()
+        }
+    }
+
     $(".btn").click(function () {
         $.ajax({
             url: "http://127.0.0.1:8000/register/",
-            type: "POST",
+            method: "POST",
             dataType: "json",
-            headers: Access - Control - Allow - Origin["*"],
             data: {
                 username: $("#name").val(),
                 pwd: $("#pwd").val(),
                 re_pwd: $("#re_password").val(),
                 phone_num: $("#phone_num").val(),
-                gender: $("#gender").val(),
+                gender: get_gender(),
                 age: $("#age").val(),
                 job: $("#job").val(),
                 salary: $("#salary").val(),
                 csrfmiddlewaretoken: '{{csrf_token}}',
             },
             success: function (data) {
-                data = JSON.parse(data);
+                console.log(data, typeof(data));
                 console.log("congratulations!")
             },
             error: function (data) {
-                data = JSON.parse(data);
-                $("#name").val(data["data"]["username"]);
-                $("#pwd").val(data["data"]["phone_num"]);
-                $("#re_password").val(data["data"]["pwd"]);
-                $("#phone_num").val(data["data"]["re_pwd"]);
-                $("#gender").val(data["data"]["gender"]);
-                $("#age").val(data["data"]["age"]);
-                $("#job").val(data["data"]["job"]);
-                $("#salary").val(data["data"]["salary"]);
-                console.log(data)
+                console.log(data, typeof(data));
+                $("#name").val(data.username);
+                $("#pwd").val(data.phone_num);
+                $("#re_password").val(data.pwd);
+                $("#phone_num").val(data.re_pwd);
+                //$("#gender").val(data.gender);
+                $("#age").val(data.age);
+                $("#job").val(data.job);
+                $("#salary").val(data.salary);
             }
         })
     })

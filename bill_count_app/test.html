@@ -11,17 +11,33 @@
     div2内的文本
     <span>span内有文本内容</span>
 </div>
-<input type="text" id="input1" value="这是一个input标签1">
-<input type="text" name="" id="input2" value="这是一个input标签2" placeholder="能成功获取">
+<input type="radio" id="input1" value="male">
+<input type="radio" name="" id="input2" value="female">
 <button id="button1" value="这是一个button标签"></button>
 <p id="thead">there is a span tag</p>
+
+<select name="salary" id="salary" class="form-control">
+        <option value="10000<">10000<</option>
+
+    <option value="<2000"><2000</option>
+    <option value="2000-5000">2000-5000</option>
+    <option value="5000-8000">5000-8000</option>
+    <option value="8000-10000">8000-10000</option>
+</select>
 
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
 
-    console.log($("#input1").val("we"));
-    console.log($("#input2").val("are good kids"));
+    //console.log($("#input1").val("we"));
+    //console.log($("#input2").val("are good kids"));
+    //let data = $("div input").hasAttribute("checked").valueOf();
+    //console.log(data);
+    //console.log($("select").val());
+    let input_tag = $("#input1");
+    input_tag.attr("checked","checked");
+    console.log(input_tag.prop("checked"));
+    $("#input1").removeAttr("checked");
     let trEle = document.createElement("tr");
     $(trEle).appendTo("p");
     const td_tag = document.createElement("td");

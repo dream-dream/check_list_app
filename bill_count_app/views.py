@@ -2,11 +2,13 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.db.models import Q
 import re
+import json
+# from django.views.decorators.csrf import csrf_exempt
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import RegisterForm
+from bill_count_app.form import get_salary, get_gender
 
 # Create your views here.
-finally_response_data = {"code": 500, "msg": "注册失败，请重试"}
+finally_response_data = {"code": 500, "msg": "register failed，please try again"}
 
 
 def login(request):
@@ -24,7 +26,8 @@ def login(request):
             redirect('input/')
         else:
             finally_response_data = {"code": 500, "msg": "sorry, login failed, please try again"}
-            return HttpResponse(finally_response_data)
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
     else:
         redirect('login/')
     return HttpResponse("hello")
@@ -55,99 +58,81 @@ def register(request):
         data["job"] = job
         data["salary"] = salary
         # todo checkout this field
+        if username is "" or phone_num is "" or pwd is "":
+            data["code"] = 404
+            data["msg"] = "sorry, username and telephone and password are required"
         is_username = User.objects.filter(username=username).exists()
+
         if is_username:
             finally_response_data["code"] = 300
-            finally_response_data["msg"] = "该用户名已存在，请重试"
+            finally_response_data["msg"] = "the username already exist, could you try another one?"
             data["username"] = ""
             data["pwd"] = ""
             data["re_pwd"] = ""
             finally_response_data["data"] = data
-            return JsonResponse(finally_response_data)
-        if len(username) < 5 or len(username) > 15:
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
+        if username is not "" and (len(username) < 5 or len(username) > 15):
             finally_response_data["code"] = 305
-            finally_response_data["msg"] = "用户名最少不低于5位，最多不高于15位,请重试"
+            finally_response_data["msg"] = "the username at least got 5 bits,at most got 15 bits"
             data["username"] = ""
             data["pwd"] = ""
             data["re_pwd"] = ""
             finally_response_data["data"] = data
-            return JsonResponse(finally_response_data)
-
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
         # todo use re model to checkout this field
-        if phone_num.isdigt():
+        if phone_num.isdigit():
             phone_num = re.findall('^1[345789]\d{9}$', phone_num)
             if not phone_num:
                 finally_response_data["code"] = 405
-                finally_response_data["msg"] = "手机号输入有误，请重试"
+                finally_response_data["msg"] = "the telephone number was wrong, could you try again"
                 data["phone_num"] = ""
                 data["pwd"] = ""
                 data["re_pwd"] = ""
                 finally_response_data["data"] = data
-                return JsonResponse(finally_response_data)
-        else:
+                data = json.dumps(finally_response_data)
+                return HttpResponse(data)
+        elif not phone_num.isdigit() and "":
             finally_response_data["code"] = 400
-            finally_response_data["msg"] = "格式不对，必须是纯数字，请重试"
+            finally_response_data["msg"] = "the format of telephone number must be all digits,come on!"
             data["phone_num"] = ""
             data["pwd"] = ""
             data["re_pwd"] = ""
             finally_response_data["data"] = data
-            return JsonResponse(finally_response_data)
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
         # todo checkout the power of pwd, got digit & character & symbol
         if pwd != re_pwd:
             finally_response_data["code"] = 410
-            finally_response_data["msg"] = "两次密码不一致，请重新输入"
+            finally_response_data["msg"] = "two passwords inconsistent，try again"
             data["pwd"] = ""
             data["re_pwd"] = ""
             finally_response_data["data"] = data
-            return JsonResponse(finally_response_data)
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
         pwd = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
-        if not pwd:
+        if not pwd and "":
             finally_response_data["code"] = 400
-            finally_response_data["msg"] = "格式不对，以字母开头，包含数字字母下划线，最短6位，最长15位"
+            finally_response_data["msg"] = \
+                "the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits"
             data["pwd"] = ""
             data["re_pwd"] = ""
             finally_response_data["data"] = data
-            return JsonResponse(finally_response_data)
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
+
         try:
             user_object = User.objects.create(username=username, phone_num=phone_num, pwd=pwd)
-            user_detail_obj = UserDetail.objects.create(gender=gender, age=age, job=job, salary=salary)
-            user_object.save()
-            user_detail_obj.save()
+            user_item = UserDetail.objects.create(user_id_id=user_object.pk, gender=get_gender(gender), age=age,
+                                                  job=job, salary=get_salary(salary))
         except Exception as e:
-            print(str(e))
-            return JsonResponse(finally_response_data)
+            print("exception", str(e))
+            return HttpResponse(finally_response_data)
     finally_response_data["code"] = 200
     finally_response_data["msg"] = "congratulations"
-    return JsonResponse(data)
-    # return redirect('input/')
-        # 这里是用了forms组件，跟前端强耦合了，所以弃用
-        # try:
-        #     re_form_item = RegisterForm(request.POST)
-        # except Exception as e:
-        #     print(str(e))
-        #     return JsonResponse(finally_response_data)
-        # if re_form_item.is_valid():
-        #     try:
-        #         username = re_form_item.cleaned_data['username']
-        #         mobile = re_form_item.cleaned_data['phone_num']
-        #         password = re_form_item.cleaned_data['password']
-        #         gender = re_form_item.cleaned_data['gender']
-        #         age = re_form_item.cleaned_data['age']
-        #         job = re_form_item.cleaned_data['job']
-        #         salary = re_form_item.cleaned_data['salary']
-        #         user_object = User.objects.create(username=username, phone_num=mobile, pwd=password)
-        #         user_detail_obj = UserDetail.objects.create(gender=gender, age=age, job=job, salary=salary)
-        #         user_object.save()
-        #         user_detail_obj.save()
-        #         finally_response_data["code"] = 200
-        #         finally_response_data["msg"] = "congratulations! you register successfully"
-        #         return JsonResponse(finally_response_data)
-        #     except Exception as e:
-        #         print(str(e))
-        #         return JsonResponse(finally_response_data)
-        #
-        # else:
-        #     return JsonResponse(finally_response_data)
+    data = json.dumps(finally_response_data)
+    return HttpResponse(data)
 
 
 def input(request):
@@ -167,11 +152,14 @@ def input(request):
         except Exception as e:
             print(str(e))
             finally_response_data["code"] = 500
-            finally_response_data["msg"] = "提交失败，请重试"
-            return JsonResponse(finally_response_data)
+            finally_response_data["msg"] = "submit failed，try again"
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
     finally_response_data["code"] = 200
-    finally_response_data["msg"] = "提交成功"
-    return JsonResponse(finally_response_data)
+    finally_response_data["msg"] = "submit successfully"
+    data = json.dumps(finally_response_data)
+    return HttpResponse(data)
+
 
 def get_detail(request):
     """
@@ -199,7 +187,8 @@ def get_detail(request):
         for query_object in detail_query_set:
             begin_num += query_object.money
         detail_query_dict[sum] = begin_num
-        return HttpResponse(detail_query_dict)
+        data = json.dumps(detail_query_dict)
+        return HttpResponse(data)
 
 
 def get_list(request):
@@ -221,8 +210,8 @@ def get_list(request):
                 Q(time=start_time) | Q(time=end_time)
             ).values("time", "money")
         except Exception as e:
-            print(str(e))
-            return JsonResponse("database was wrong, try again")
+            print("exception", str(e))
+            return HttpResponse("database was wrong, try again")
         # total the money that transaction on the same day
         sum_money_dict = {}
         start_num = 0
@@ -240,5 +229,6 @@ def get_list(request):
             each_dict["money"] = item[1]
             finally_data_format.append(each_dict)
         finally_data_format.append({"total_money": start_num})
-        return HttpResponse(finally_data_format)
+        data = json.dumps(finally_response_data)
+        return HttpResponse(data)
     return HttpResponse("hello there")

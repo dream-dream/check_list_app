@@ -44,7 +44,6 @@
         url: "http://127.0.0.1:8000/get_detail/",
         type: "POST",
         dataType: "json",
-        headers: Access - Control - Allow - Origin["*"],
         data: {
             start_time: $("#start_time").val(),
             end_time: $("#end_time").val(),
@@ -66,7 +65,6 @@
             })
         },
         error: function (errorMsg) {
-            errorMsg = JSON.parse(errorMsg);
             console.log(errorMsg)
         }
     })
