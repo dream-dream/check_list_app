@@ -119,6 +119,15 @@
             },
             success: function (data) {
                 console.log(data, typeof(data));
+                // 这里要如何通过状态码来改变所调用的函数，有错误信息应该用下面的error函数而不是这里的
+                $("#name").val("");
+                $("#pwd").val("");
+                $("#re_password").val("");
+                $("#phone_num").val("");
+                $("#gender").val("");
+                $("#age").val("");
+                $("#job").val("");
+                $("#salary").val("");
                 console.log("congratulations!")
             },
             error: function (data) {

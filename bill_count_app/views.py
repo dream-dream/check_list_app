@@ -61,6 +61,8 @@ def register(request):
         if username is "" or phone_num is "" or pwd is "":
             data["code"] = 404
             data["msg"] = "sorry, username and telephone and password are required"
+            data = json.dumps(data)
+            return HttpResponse(data)
         is_username = User.objects.filter(username=username).exists()
 
         if is_username:
