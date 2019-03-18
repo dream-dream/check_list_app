@@ -63,65 +63,48 @@ def register(request):
             data["msg"] = "sorry, username and telephone and password are required"
             data = json.dumps(data)
             return HttpResponse(data)
+
         is_username = User.objects.filter(username=username).exists()
 
         if is_username:
-            finally_response_data["code"] = 300
-            finally_response_data["msg"] = "the username already exist, could you try another one?"
+            data["code"] = 401
+            data["msg"] = "the username already exist, could you try another one?"
             data["username"] = ""
-            data["pwd"] = ""
-            data["re_pwd"] = ""
-            finally_response_data["data"] = data
-            data = json.dumps(finally_response_data)
+            data = json.dumps(data)
             return HttpResponse(data)
         if username is not "" and (len(username) < 5 or len(username) > 15):
-            finally_response_data["code"] = 305
-            finally_response_data["msg"] = "the username at least got 5 bits,at most got 15 bits"
+            data["code"] = 401
+            data["msg"] = "the username at least got 5 bits,at most got 15 bits"
             data["username"] = ""
-            data["pwd"] = ""
-            data["re_pwd"] = ""
-            finally_response_data["data"] = data
-            data = json.dumps(finally_response_data)
+            data = json.dumps(data)
             return HttpResponse(data)
         # todo use re model to checkout this field
         if phone_num.isdigit():
             phone_num = re.findall('^1[345789]\d{9}$', phone_num)
             if not phone_num:
-                finally_response_data["code"] = 405
-                finally_response_data["msg"] = "the telephone number was wrong, could you try again"
+                data["code"] = 402
+                data["msg"] = "the telephone number was wrong, could you try again"
                 data["phone_num"] = ""
-                data["pwd"] = ""
-                data["re_pwd"] = ""
-                finally_response_data["data"] = data
-                data = json.dumps(finally_response_data)
+                data = json.dumps(data)
                 return HttpResponse(data)
         elif not phone_num.isdigit() and "":
-            finally_response_data["code"] = 400
-            finally_response_data["msg"] = "the format of telephone number must be all digits,come on!"
+            data["code"] = 402
+            data["msg"] = "the format of telephone number must be all digits,come on!"
             data["phone_num"] = ""
-            data["pwd"] = ""
-            data["re_pwd"] = ""
-            finally_response_data["data"] = data
-            data = json.dumps(finally_response_data)
+            data = json.dumps(data)
             return HttpResponse(data)
         # todo checkout the power of pwd, got digit & character & symbol
         if pwd != re_pwd:
-            finally_response_data["code"] = 410
-            finally_response_data["msg"] = "two passwords inconsistent，try again"
-            data["pwd"] = ""
-            data["re_pwd"] = ""
-            finally_response_data["data"] = data
-            data = json.dumps(finally_response_data)
+            data["code"] = 400
+            data["msg"] = "two passwords inconsistent，try again"
+            data = json.dumps(data)
             return HttpResponse(data)
         pwd = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
         if not pwd and "":
-            finally_response_data["code"] = 400
-            finally_response_data["msg"] = \
+            data["code"] = 400
+            data["msg"] = \
                 "the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits"
-            data["pwd"] = ""
-            data["re_pwd"] = ""
-            finally_response_data["data"] = data
-            data = json.dumps(finally_response_data)
+            data = json.dumps(data)
             return HttpResponse(data)
 
         try:

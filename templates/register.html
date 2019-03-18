@@ -117,29 +117,28 @@
                 salary: $("#salary").val(),
                 csrfmiddlewaretoken: '{{csrf_token}}',
             },
-            success: function (data) {
-                console.log(data, typeof(data));
-                // 这里要如何通过状态码来改变所调用的函数，有错误信息应该用下面的error函数而不是这里的
-                $("#name").val("");
-                $("#pwd").val("");
-                $("#re_password").val("");
-                $("#phone_num").val("");
-                $("#gender").val("");
-                $("#age").val("");
-                $("#job").val("");
-                $("#salary").val("");
-                console.log("congratulations!")
+            dataFilter: function (data, dataType) {
+                return data
             },
-            error: function (data) {
-                console.log(data, typeof(data));
+            success: function (data) {
+                let msg = data.msg;
                 $("#name").val(data.username);
-                $("#pwd").val(data.phone_num);
-                $("#re_password").val(data.pwd);
-                $("#phone_num").val(data.re_pwd);
-                //$("#gender").val(data.gender);
+                $("#phone_num").val(data.phone_num);
+                $("#gender").val(data.gender);
                 $("#age").val(data.age);
                 $("#job").val(data.job);
                 $("#salary").val(data.salary);
+                $("#pwd").val("");
+                $("#re_password").val("");
+                console.log(data, typeof(data));
+                console.log(data.code);
+                alert(msg);
+                console.log("congratulations!")
+            }, error: function (data) {
+                console.log(data, typeof(data));
+                alert("something was wrong ,please check out!")
+            }, complete: function () {
+
             }
         })
     })
