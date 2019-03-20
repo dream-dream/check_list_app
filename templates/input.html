@@ -33,13 +33,23 @@
 
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="/static/js/handle_time.js"></script>
 <script>
-    {#    对于输入的内容在前端也可以进行校验，看你自己选择用什么方式#}
+    function deal_with_time() {
+    let time = new Date();
+    year = time.getFullYear();
+    month = time.getMonth();
+    date = time.getDate();
+    hour = time.getHours();
+    minute = time.getMinutes();
+    second = time.getMinutes();
+    finally_time_form = year + ":" + month + ":" + date + ":" + hour + ":" + minute + ":" + second;
+    return finally_time_form
+}
+    //对于输入的内容在前端也可以进行校验，看你自己选择用什么方式
     $(".btn").click(function () {
         time_obj = deal_with_time();
         $.ajax({
-            url: "http://127.0.0.1:8000/input/",
+            url: "http://127.0.0.1:8000/api/v1/input/",
             dataType: "json",
             type: "POST",
             data: {
@@ -49,10 +59,13 @@
                 csrfmiddlewaretoken: '{{csrf_token}}',
             },
             success: function (data) {
+                console.log(data);
                 console.log("congratulations")
             },
-            error: function (data) {
-                console.log(data)
+            error: function (XMLHttpRequest,arg,response) {
+                    console.log(XMLHttpRequest);
+                    console.log(arg);
+                    console.log("something was wrong,checkout again")
             }
 
         })

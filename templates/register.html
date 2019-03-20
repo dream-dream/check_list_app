@@ -103,7 +103,7 @@
 
     $(".btn").click(function () {
         $.ajax({
-            url: "http://127.0.0.1:8000/register/",
+            url: "http://127.0.0.1:8000/api/v1/register/",
             method: "POST",
             dataType: "json",
             data: {
@@ -130,10 +130,10 @@
                 $("#salary").val(data.salary);
                 $("#pwd").val("");
                 $("#re_password").val("");
-                console.log(data, typeof(data));
-                console.log(data.code);
+                //console.log(data, typeof(data));
+                //console.log(data.code);
                 alert(msg);
-                console.log("congratulations!")
+                console.log("request was congratulations!")
             }, error: function (data) {
                 console.log(data, typeof(data));
                 alert("something was wrong ,please check out!")

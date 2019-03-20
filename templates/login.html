@@ -39,7 +39,7 @@
     $(".btn").click(function () {
         try {
             $.ajax({
-                url: "http://127.0.0.1:8000/login/",
+                url: "http://127.0.0.1:8000/api/v1/login/",
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -48,10 +48,20 @@
                     csrfmiddlewaretoken: '{{csrf_token}}',
                 },
                 success: function (data) {
-                    console.log("congratulations!")
+                    console.log(data, data.code);
+                    if(data.code===500){
+                        $("#name").val("");
+                        $("#pwd").val("");
+                    }
+                    alert(data.msg);
+                    console.log("request was congratulations!")
                 },
-                error: function (arg) {
-                    console.log(arg)
+                error: function (XMLHttpRequest,arg,response) {
+                    console.log(XMLHttpRequest);
+                    console.log(arg);
+                    console.log("something was wrong,checkout again")
+                },
+                complete:function (XMLHttpRequest, data) {
                 }
             })
         } catch (e) {

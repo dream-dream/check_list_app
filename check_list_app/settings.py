@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'bill_count_app.apps.BillCountAppConfig',
+    'fore_end.apps.ForeEndConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'middleware.MiddleCors',
+    'middle_file.middleware.MiddleCors',
 ]
 
 ROOT_URLCONF = 'check_list_app.urls'

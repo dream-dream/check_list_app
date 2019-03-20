@@ -90,8 +90,34 @@ object_datetime = datetime.datetime.now()
 # elif not int_obj.isdigit() and "":
 #     print('int_obj',int_obj, type(int_obj))
 
-l = [123, '123']
-obj = '123'
-for i in l:
-    if obj == i:
-        print(l.index(i))
+# l = [123, '123']
+# obj = '123'
+# for i in l:
+#     if obj == i:
+#         print(l.index(i))
+li = ["a", "b", "c"]
+import random
+import time, datetime
+time_obj = datetime.datetime.now()
+random_char = random.choice(
+    [chr(random.randint(65, 90)), chr(random.randint(97, 122))])
+# print(random_char)
+start_str = ""
+for i in range(5):
+    provisional_str = str(random.randrange(10, 100))+random_char
+    start_str += provisional_str
+# print("start_str",start_str)
+time_stamp = time.time()
+struc_time = time.localtime(time_stamp)
+strf_time_obj = time.strftime("%Y-%m-%d ||%X", struc_time)
+# print("time_stamp", time_stamp, "struc_time", struc_time, "strf_time_obj", strf_time_obj)
+# print(time.strftime("%Y-%m-%d %X"))  # 2019-03-19 17:52:27
+# print(time.gmtime())  # time.struct_time(tm_year=2019, tm_mon=3, tm_mday=19, tm_hour=9, tm_min=52, tm_sec=27,
+# # tm_wday=1, tm_yday=78, tm_isdst=0)
+# print(time.mktime(time.localtime()), time.time())  # 1552989147.0 1552989147.831865
+# print(time.asctime(), type(time.asctime()))  # Tue Mar 19 17:52:27 2019 <class 'str'>
+print("random-str-obj", time.asctime()+start_str)
+import calendar
+cal = calendar.month(2016, 1)
+# print("以下输出2016年1月份的日历:")
+# print(cal)

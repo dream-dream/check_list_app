@@ -18,9 +18,17 @@ from django.urls import path
 from bill_count_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/login/', views.login, name='api_login'),
+    path('api/v1/logout/', views.logout, name='api_logout'),
+    path('api/v1/register/', views.register, name='api_register'),
+    path('api/v1/input/', views.input, name='api_input'),
+    path('api/v1/get_list/', views.get_list, name='api_get_list'),
+    path('api/v1/get_detail/', views.get_detail, name='api_get_detail'),
     path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('register/', views.register, name='register'),
     path('input/', views.input, name='input'),
     path('get_list/', views.get_list, name='get_list'),
     path('get_detail/', views.get_detail, name='get_detail'),
+
 ]

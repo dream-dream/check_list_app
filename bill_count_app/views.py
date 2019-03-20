@@ -1,14 +1,28 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.db.models import Q
+from functools import wraps
 import re
 import json
+import time
+import random
 # from django.views.decorators.csrf import csrf_exempt
 from bill_count_app.models import User, UserDetail, BillDetail
 from bill_count_app.form import get_salary, get_gender
 
 # Create your views here.
 finally_response_data = {"code": 500, "msg": "register failed，please try again"}
+
+
+def check_login(func):
+    @wraps(func)
+    def inner(request, *args, **kwargs):
+        if request.session.get("id") and request.session.get("TokenStr"):
+            return func(request, *args, **kwargs)
+        else:
+            redirect("login/")
+
+    return inner
 
 
 def login(request):
@@ -22,11 +36,26 @@ def login(request):
         password = request.POST.get('pwd')
         user_object = User.objects.filter(username=username, pwd=password).first()
         if user_object:
+            # set login status into session, for the other interface check is login or not
+            random_char = random.choice(
+                [chr(random.randint(65, 90)), chr(random.randint(97, 122))])
+            start_str = ""
+            for i in range(5):
+                provisional_str = str(random.randrange(10, 100)) + random_char
+                start_str += provisional_str
             request.session["id"] = user_object.id
-            redirect('input/')
-        else:
-            finally_response_data = {"code": 500, "msg": "sorry, login failed, please try again"}
+            request.session["TokenStr"] = time.asctime() + start_str
+            global finally_response_data
+            finally_response_data["code"] = 200
+            finally_response_data["msg"] = "you are in"
             data = json.dumps(finally_response_data)
+            return HttpResponse(data)
+        else:
+            finally_response_data = {"code": 500,
+                                     "msg": "sorry, login failed, username or password was wrong, please try again"}
+            data = json.dumps(finally_response_data)
+            # ret = HttpResponse(data)
+            # ret['Access-Control-Allow-Origin'] = '*'
             return HttpResponse(data)
     else:
         redirect('login/')
@@ -57,7 +86,7 @@ def register(request):
         data["age"] = age
         data["job"] = job
         data["salary"] = salary
-        # todo checkout this field
+        # todo checkout these fields
         if username is "" or phone_num is "" or pwd is "":
             data["code"] = 404
             data["msg"] = "sorry, username and telephone and password are required"
@@ -78,7 +107,7 @@ def register(request):
             data["username"] = ""
             data = json.dumps(data)
             return HttpResponse(data)
-        # todo use re model to checkout this field
+        # todo use re model to checkout the telephone field
         if phone_num.isdigit():
             phone_num = re.findall('^1[345789]\d{9}$', phone_num)
             if not phone_num:
@@ -120,6 +149,7 @@ def register(request):
     return HttpResponse(data)
 
 
+@check_login
 def input(request):
     """
     提交记账信息
@@ -135,7 +165,7 @@ def input(request):
             bill_obj = BillDetail.objects.filter(user_id=user_id)
             bill_obj.create(time=this_moment, money=money, remarks=remarks)
         except Exception as e:
-            print(str(e))
+            print('Exception', str(e))
             finally_response_data["code"] = 500
             finally_response_data["msg"] = "submit failed，try again"
             data = json.dumps(finally_response_data)
@@ -146,6 +176,7 @@ def input(request):
     return HttpResponse(data)
 
 
+@check_login
 def get_detail(request):
     """
     获取指定时间内的账单信息
@@ -176,6 +207,7 @@ def get_detail(request):
         return HttpResponse(data)
 
 
+@check_login
 def get_list(request):
     """
     获取指定时间内的账单总金额，并且把每天的总额计算出来
@@ -217,3 +249,10 @@ def get_list(request):
         data = json.dumps(finally_response_data)
         return HttpResponse(data)
     return HttpResponse("hello there")
+
+
+@check_login
+def logout(request):
+    request.session.delete("id")
+    request.session.delete("TokenStr")
+    redirect("login/")
