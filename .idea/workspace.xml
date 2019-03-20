@@ -2,21 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7b9fbee-881f-47e2-b0bc-9933004f07e7" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/middle_file/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middle_file/middleware.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bill_count_app/form.py" beforeDir="false" afterPath="$PROJECT_DIR$/bill_count_app/form.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bill_count_app/migrations/0001_initial.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/bill_count_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bill_count_app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bill_count_app/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/bill_count_app/tests.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bill_count_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/bill_count_app/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/check_list_app/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/check_list_app/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/check_list_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/check_list_app/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/get_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/get_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middle_file/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/middle_file/middleware.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/get_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/get_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/input.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/input.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,7 +21,8 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/check_list_app$tests.coverage" NAME="tests Coverage Results" MODIFIED="1553003817980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bill_count_app" />
+    <SUITE FILE_PATH="coverage/check_list_app$form.coverage" NAME="form Coverage Results" MODIFIED="1553097171598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bill_count_app" />
+    <SUITE FILE_PATH="coverage/check_list_app$tests.coverage" NAME="tests Coverage Results" MODIFIED="1553095040962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bill_count_app" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -66,11 +62,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/check_list_app/settings.py">
+      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bill_count_app/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-247">
-              <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+            <state relative-caret-position="258">
+              <caret line="138" column="25" selection-start-line="138" selection-start-column="25" selection-end-line="138" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -78,47 +74,29 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/check_list_app/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="30" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="30" />
-              <folding>
-                <element signature="e#638#670#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="131">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="get_list.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="get_list.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/get_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="40" column="43" selection-start-line="40" selection-start-column="43" selection-end-line="40" selection-end-column="43" />
+            <state relative-caret-position="316">
+              <caret line="72" column="17" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="input.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/input.html">
+      <file leaf-file-name="jquery.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/jquery.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/login.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="41" column="51" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="register.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/register.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="105" column="47" selection-start-line="105" selection-start-column="47" selection-end-line="105" selection-end-column="47" />
+            <state relative-caret-position="180">
+              <caret line="3" column="1970" selection-start-line="3" selection-start-column="1970" selection-end-line="3" selection-end-column="1970" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -126,38 +104,43 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bill_count_app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2505">
-              <caret line="167" column="28" selection-start-line="167" selection-start-column="28" selection-end-line="167" selection-end-column="28" />
+            <state relative-caret-position="383">
+              <caret line="258" column="43" selection-start-line="258" selection-start-column="43" selection-end-line="258" selection-end-column="43" />
               <folding>
-                <element signature="e#0#60#0" expanded="true" />
+                <element signature="e#0#59#0" expanded="true" />
+                <element signature="e#514#768#0" />
+                <element signature="e#795#2315#0" />
+                <element signature="e#2345#5834#0" />
+                <element signature="e#5891#7058#0" />
+                <element signature="e#7103#8360#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="exception.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/core/handlers/exception.py">
+      <file leaf-file-name="form.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bill_count_app/form.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="33" selection-start-line="33" selection-end-line="33" />
+            <state relative-caret-position="288">
+              <caret line="31" selection-start-line="31" selection-end-line="31" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/core/handlers/base.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="851">
-              <caret line="136" selection-start-line="136" selection-end-line="136" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="get_detail.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="get_detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/get_detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
+            <state relative-caret-position="80">
               <caret line="43" column="43" selection-start-line="43" selection-start-column="43" selection-end-line="43" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bill_count_app/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="310">
+              <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
             </state>
           </provider>
         </entry>
@@ -178,6 +161,7 @@
       <find>DecimalField</find>
       <find>100</find>
       <find>time</find>
+      <find>datetimepicker</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -196,21 +180,22 @@
         <option value="$PROJECT_DIR$/static/js/handle_time.js" />
         <option value="$PROJECT_DIR$/bill_count_app/test.html" />
         <option value="$PROJECT_DIR$/middleware/middleware_cors" />
-        <option value="$PROJECT_DIR$/bill_count_app/form.py" />
-        <option value="$PROJECT_DIR$/bill_count_app/models.py" />
-        <option value="$PROJECT_DIR$/bill_count_app/tests.py" />
         <option value="8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0/schema/test/table/django_session.sql" />
         <option value="$PROJECT_DIR$/middleware.py" />
-        <option value="$PROJECT_DIR$/middle_file/middleware.py" />
-        <option value="$PROJECT_DIR$/bill_count_app/views.py" />
         <option value="$PROJECT_DIR$/check_list_app/settings.py" />
-        <option value="$PROJECT_DIR$/check_list_app/urls.py" />
         <option value="$PROJECT_DIR$/fore_end/views.py" />
         <option value="$PROJECT_DIR$/templates/login.html" />
         <option value="$PROJECT_DIR$/templates/register.html" />
-        <option value="$PROJECT_DIR$/templates/input.html" />
-        <option value="$PROJECT_DIR$/templates/get_list.html" />
         <option value="$PROJECT_DIR$/templates/get_detail.html" />
+        <option value="$PROJECT_DIR$/check_list_app/urls.py" />
+        <option value="$PROJECT_DIR$/middle_file/middleware.py" />
+        <option value="$PROJECT_DIR$/bill_count_app/tests.py" />
+        <option value="$PROJECT_DIR$/templates/input.html" />
+        <option value="$PROJECT_DIR$/bill_count_app/models.py" />
+        <option value="$PROJECT_DIR$/bill_count_app/migrations/0001_initial.py" />
+        <option value="$PROJECT_DIR$/bill_count_app/form.py" />
+        <option value="$PROJECT_DIR$/bill_count_app/views.py" />
+        <option value="$PROJECT_DIR$/templates/get_list.html" />
       </list>
     </option>
   </component>
@@ -247,6 +232,12 @@
               <item name="check_list_app" type="b2602c69:ProjectViewProjectNode" />
               <item name="check_list_app" type="462c0819:PsiDirectoryNode" />
               <item name="bill_count_app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="check_list_app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="check_list_app" type="462c0819:PsiDirectoryNode" />
+              <item name="bill_count_app" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="check_list_app" type="b2602c69:ProjectViewProjectNode" />
@@ -294,7 +285,26 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.check_list_app">
+  <component name="RunManager" selected="Python.form">
+    <configuration name="form" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="check_list_app" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bill_count_app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bill_count_app/form.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="tests" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="check_list_app" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -340,9 +350,11 @@
     <list>
       <item itemvalue="Django server.check_list_app" />
       <item itemvalue="Python.tests" />
+      <item itemvalue="Python.form" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.form" />
         <item itemvalue="Python.tests" />
       </list>
     </recent_temporary>
@@ -377,8 +389,8 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="manage.py@check_list_app" weight="0.32985073" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.47313434" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33880597" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32985073" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.3283582" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.45671642" />
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4988345" visible="true" weight="0.20457797" />
@@ -429,31 +441,12 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bill_count_app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/db/models/fields/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21255">
-          <caret line="1449" column="8" selection-start-line="1449" selection-start-column="8" selection-end-line="1449" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/db/models/fields/related.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11265">
-          <caret line="781" column="36" selection-start-line="781" selection-start-column="27" selection-end-line="781" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/admin.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/check_list_app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -468,13 +461,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11265">
           <caret line="781" column="36" selection-start-line="781" selection-start-column="27" selection-end-line="781" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/db/models/fields/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21255">
-          <caret line="1449" column="8" selection-start-line="1449" selection-start-column="8" selection-end-line="1449" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -525,13 +511,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="137">
           <caret line="7400" selection-start-line="7400" selection-end-line="7400" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="4553" column="4" selection-start-line="4553" selection-start-column="4" selection-end-line="4553" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -592,40 +571,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/form.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/jquery.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="5" column="15296" selection-start-line="5" selection-start-column="15296" selection-end-line="5" selection-end-column="15296" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/migrations/0001_initial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-          <folding>
-            <element signature="e#49#89#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/random.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -637,27 +582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="1715" column="8" selection-start-line="1715" selection-start-column="8" selection-end-line="1715" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.1/python_stubs/171075908/time.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="48" column="12" lean-forward="true" selection-start-line="44" selection-start-column="3" selection-end-line="48" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="118" column="21" selection-start-line="118" selection-start-column="21" selection-end-line="118" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0/schema/test/table/django_session">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -689,16 +613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/middle_file/middleware.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/core/handlers/exception.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -713,47 +627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/check_list_app/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-247">
-          <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/check_list_app/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="30" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="30" />
-          <folding>
-            <element signature="e#638#670#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fore_end/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bill_count_app/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2505">
-          <caret line="167" column="28" selection-start-line="167" selection-start-column="28" selection-end-line="167" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="41" column="51" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/register.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -761,24 +634,171 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/input.html">
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
+        <state relative-caret-position="163">
+          <caret line="10611" column="12" selection-start-line="10611" selection-start-column="12" selection-end-line="10611" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/get_list.html">
+    <entry file="file://$PROJECT_DIR$/check_list_app/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="40" column="43" selection-start-line="40" selection-start-column="43" selection-end-line="40" selection-end-column="43" />
+        <state relative-caret-position="15">
+          <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0/schema/test/table/django_session">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/http/response.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2085">
+          <caret line="157" column="8" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fore_end/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/middle_file/middleware.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/_strptime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="555" column="32" selection-start-line="555" selection-start-column="32" selection-end-line="555" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venv/check_list_app/lib/python3.6/site-packages/django/db/models/fields/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="1442" column="18" selection-start-line="1442" selection-start-column="6" selection-end-line="1442" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0/schema/test/table/bill_count_app_billdetail">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/get_detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
+        <state relative-caret-position="80">
           <caret line="43" column="43" selection-start-line="43" selection-start-column="43" selection-end-line="43" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2018.1/python_stubs/171075908/time.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1313">
+          <caret line="147" column="4" selection-start-line="147" selection-start-column="4" selection-end-line="147" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://8a3e0abf-0375-4ec4-9c4d-77c80a7e62e0/schema/test/table/bill_count_app_user">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="46" column="41" lean-forward="true" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bill_count_app/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="138" column="25" selection-start-line="138" selection-start-column="25" selection-end-line="138" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bill_count_app/form.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/input.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/check_list_app/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/jquery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="3" column="1970" selection-start-line="3" selection-start-column="1970" selection-end-line="3" selection-end-column="1970" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bill_count_app/migrations/0001_initial.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="109">
+          <caret line="18" column="77" selection-start-line="18" selection-start-column="77" selection-end-line="18" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bill_count_app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bill_count_app/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="258" column="43" selection-start-line="258" selection-start-column="43" selection-end-line="258" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#514#768#0" />
+            <element signature="e#795#2315#0" />
+            <element signature="e#2345#5834#0" />
+            <element signature="e#5891#7058#0" />
+            <element signature="e#7103#8360#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/get_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="72" column="17" selection-start-line="72" selection-start-column="17" selection-end-line="72" selection-end-column="17" />
         </state>
       </provider>
     </entry>

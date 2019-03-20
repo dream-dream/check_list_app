@@ -8,7 +8,7 @@ import time
 import random
 # from django.views.decorators.csrf import csrf_exempt
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import get_salary, get_gender
+from bill_count_app.form import get_salary, get_gender, get_time_format
 
 # Create your views here.
 finally_response_data = {"code": 500, "msg": "register failed，please try again"}
@@ -20,7 +20,7 @@ def check_login(func):
         if request.session.get("id") and request.session.get("TokenStr"):
             return func(request, *args, **kwargs)
         else:
-            redirect("login/")
+            return redirect("api/v1/login/")
 
     return inner
 
@@ -35,6 +35,7 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('pwd')
         user_object = User.objects.filter(username=username, pwd=password).first()
+        print("user message", username, password, user_object)
         if user_object:
             # set login status into session, for the other interface check is login or not
             random_char = random.choice(
@@ -44,6 +45,7 @@ def login(request):
                 provisional_str = str(random.randrange(10, 100)) + random_char
                 start_str += provisional_str
             request.session["id"] = user_object.id
+            # request.set_signed_cookie("id", user_object.id, salt="qaz")
             request.session["TokenStr"] = time.asctime() + start_str
             global finally_response_data
             finally_response_data["code"] = 200
@@ -58,8 +60,7 @@ def login(request):
             # ret['Access-Control-Allow-Origin'] = '*'
             return HttpResponse(data)
     else:
-        redirect('login/')
-    return HttpResponse("hello")
+        return redirect('api/v1/login/')
 
 
 def register(request):
@@ -109,7 +110,8 @@ def register(request):
             return HttpResponse(data)
         # todo use re model to checkout the telephone field
         if phone_num.isdigit():
-            phone_num = re.findall('^1[345789]\d{9}$', phone_num)
+            phone_num_li = re.findall('^1[345789]\d{9}$', phone_num)
+            phone_num = phone_num_li[0]
             if not phone_num:
                 data["code"] = 402
                 data["msg"] = "the telephone number was wrong, could you try again"
@@ -128,7 +130,8 @@ def register(request):
             data["msg"] = "two passwords inconsistent，try again"
             data = json.dumps(data)
             return HttpResponse(data)
-        pwd = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
+        pwd_li = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
+        pwd = pwd_li[0]
         if not pwd and "":
             data["code"] = 400
             data["msg"] = \
@@ -159,11 +162,14 @@ def input(request):
     if request.method == 'POST':
         money = request.POST.get("money")
         remarks = request.POST.get("remarks")
-        this_moment = request.POST.get("time")  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
+        this_moment = float(request.POST.get("time"))  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
+        print("time", this_moment, type(this_moment))
         user_id = request.session.get("id")
         try:
-            bill_obj = BillDetail.objects.filter(user_id=user_id)
-            bill_obj.create(time=this_moment, money=money, remarks=remarks)
+            # bill_obj = BillDetail.objects.filter(user_id_id=user_id).exists()
+            # if bill_obj is False:
+            #     BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
+            BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
         except Exception as e:
             print('Exception', str(e))
             finally_response_data["code"] = 500
@@ -171,7 +177,7 @@ def input(request):
             data = json.dumps(finally_response_data)
             return HttpResponse(data)
     finally_response_data["code"] = 200
-    finally_response_data["msg"] = "submit successfully"
+    finally_response_data["msg"] = "congratulation, you wrote a bill tip"
     data = json.dumps(finally_response_data)
     return HttpResponse(data)
 
@@ -183,19 +189,21 @@ def get_detail(request):
     :param request:
     :return:
     """
-    if request.method == 'GET':
+    if request.method == 'POST':
         user_id = request.session.get("id")
-        start_time = request.GET.get("start_time")
-        end_time = request.GET.get("end_time")
+        start_time = request.POST.get("start_time")
+        start_time = get_time_format(start_time)
+        end_time = request.POST.get("end_time")
+        end_time = get_time_format(end_time)
         try:
-            detail_query_set = BillDetail.objects.filter(user_id=user_id).filter(
+            detail_query_set = BillDetail.objects.filter(user_id_id=user_id).filter(
                 Q(
                     Q(time__gt=start_time) & Q(time__lt=end_time)
                 ) |
                 Q(time=start_time) | Q(time=end_time)
             ).values("time", "remarks", "money")
         except Exception as e:
-            print(str(e))
+            print("Exception", str(e))
             return HttpResponse("database was wrong, try again")
         detail_query_dict = {}
         detail_query_dict[user_id] = detail_query_set
@@ -205,6 +213,10 @@ def get_detail(request):
         detail_query_dict[sum] = begin_num
         data = json.dumps(detail_query_dict)
         return HttpResponse(data)
+    finally_response_data["code"] = 200
+    finally_response_data["msg"] = "congratulations"
+    data = json.dumps(finally_response_data)
+    return HttpResponse(data)
 
 
 @check_login
@@ -217,15 +229,13 @@ def get_list(request):
     if request.method == 'POST':
         user_id = request.session.get("id")
         start_time = request.POST.get("start_time")
+        start_time = get_time_format(start_time)
         end_time = request.POST.get("end_time")
+        end_time = get_time_format(end_time)
         # get data what we want from database
         try:
-            sum_query_set = BillDetail.objects.filter(user_id=user_id).filter(
-                Q(
-                    Q(time__gt=start_time) & Q(time__lt=end_time)
-                ) |
-                Q(time=start_time) | Q(time=end_time)
-            ).values("time", "money")
+            sum_query_set = BillDetail.objects.filter(user_id_id=user_id).filter(time__in=(start_time, end_time)).values("time", "money")
+            print("get all message", sum_query_set, type(sum_query_set))
         except Exception as e:
             print("exception", str(e))
             return HttpResponse("database was wrong, try again")
@@ -246,13 +256,19 @@ def get_list(request):
             each_dict["money"] = item[1]
             finally_data_format.append(each_dict)
         finally_data_format.append({"total_money": start_num})
+        finally_response_data["code"] = 201
+        finally_response_data["msg"] = "you got what you want"
+        finally_response_data["data"] = finally_data_format
         data = json.dumps(finally_response_data)
         return HttpResponse(data)
-    return HttpResponse("hello there")
+    finally_response_data["code"] = 200
+    finally_response_data["msg"] = "congratulations"
+    data = json.dumps(finally_response_data)
+    return HttpResponse(data)
 
 
 @check_login
 def logout(request):
     request.session.delete("id")
     request.session.delete("TokenStr")
-    redirect("login/")
+    return redirect("login/")

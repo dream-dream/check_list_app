@@ -116,8 +116,29 @@ strf_time_obj = time.strftime("%Y-%m-%d ||%X", struc_time)
 # # tm_wday=1, tm_yday=78, tm_isdst=0)
 # print(time.mktime(time.localtime()), time.time())  # 1552989147.0 1552989147.831865
 # print(time.asctime(), type(time.asctime()))  # Tue Mar 19 17:52:27 2019 <class 'str'>
-print("random-str-obj", time.asctime()+start_str)
+# print("random-str-obj", time.asctime()+start_str)
 import calendar
 cal = calendar.month(2016, 1)
 # print("以下输出2016年1月份的日历:")
 # print(cal)
+
+time_str = "2019-2-20 12:23:43"
+format_time_str = time.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+# print(time.mktime(format_time_str))
+
+# print(format_time_str)  # time.struct_time(tm_year=2019, tm_mon=2, tm_mday=20, tm_hour=12, tm_min=23, tm_sec=43,
+# tm_wday=2, tm_yday=51, tm_isdst=-1)
+# print(time.strftime("%Y-%m-%d %H:%M:%S", format_time_str))
+timeStamp = 1550636623.0
+# structTime = time.localtime(timeStamp)  # 2019-02-20 12:23:43
+structTime = time.gmtime(timeStamp)  # 2019-02-20 04:23:43
+# print(time.strftime("%Y-%m-%d %H:%M:%S", structTime))
+import re
+phone_num = re.findall('^1[345789]\d{9}$', "18978654454")
+# print(phone_num, type(phone_num))  # ['18978654454'] <class 'list'>
+search_obj = re.search('a', 'aeva egon yuan')
+print(search_obj.group())
+match_obj = re.match('a', 'aeva egon yuan')
+print(match_obj.group())
+findall_obj = re.findall('a', 'aeva egon yuan')
+print(findall_obj)

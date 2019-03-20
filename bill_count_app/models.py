@@ -29,7 +29,7 @@ class UserDetail(models.Model):
 
 class BillDetail(models.Model):
     user_id = models.ForeignKey(to=User, on_delete=models.DO_NOTHING)
-    time = models.DateTimeField(verbose_name='当前时间')
+    time = models.DecimalField(max_digits=32, decimal_places=10, verbose_name='当前时间')
     money = models.DecimalField(max_digits=10, decimal_places=3, verbose_name='输入金额')
     remarks = models.CharField(max_length=200, verbose_name='备注信息')
 

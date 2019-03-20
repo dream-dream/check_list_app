@@ -7,17 +7,14 @@ import time
 
 class MiddleCors(MiddlewareMixin):
     def process_request(self, request):
-        print("hello world")
-
+        # print("hello world")
         pass
 
     def process_response(self, request, response):
         # if request.session.get("id") and request.session.get("TokenStr"):
-        # response["Access-Control-Allow-Origin"] = 'http://localhost:63342'
-        # response["Access-Control-Allow-Origin"] = ["*", ]
         ret = HttpResponse(response)
         ret['Access-Control-Allow-Origin'] = '*'
         ret["Access-Control-Allow-Methods"] = "POST,GET,OPTION,PUT,DELETE,PATCH"
         return ret
         # else:
-        #     redirect("login/")
+        #     return redirect("login/")

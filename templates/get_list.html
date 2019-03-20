@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
+    {#    <script src="/static/js/jquery.js"></script>#}
+    {#    <script src="/static/js/jquery.datetimepicker.js"></script>#}
+    {#    <script src="/static/js/jquery.datetimepicker.full.js"></script>#}
+    {#    <script>#}
+    {#        $("#start_time").datetimepicker({lang: 'ch'});#}
+    {#        $("#start_time").datetimepicker({lang: 'ch'});#}
+    {#    </script>#}
     <title>GetList</title>
 </head>
 <body>
@@ -16,9 +23,10 @@
 
                 <div class="form-group">
                     <label for="money" class="col-sm-2">start_time</label>
-                    <div class="col-sm-3"><input id="start_time" class="form-control" type="text" name="money"></div>
+                    <div class="col-sm-3"><input id="start_time" class="form-control" type="text"></div>
                     <label for="remarks" class="col-sm-2">end_time</label>
-                    <div class="col-sm-3"><input type="text" class="form-control" id="end_time" name="remarks"></div>
+                    <div class="col-sm-3"><input id="end_time" class="form-control" type="text"></div>
+                    <button value="submit" type="button" class="btn btn-primary">submit</button>
                 </div>
             </form>
         </div>
@@ -37,33 +45,38 @@
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
-    $.ajax({
-        url: 'http://127.0.0.1:8000/api/v1/get_list/',
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            start_time: $("#start_time").val(),
-            end_time: $("#end_time").val(),
-            csrfmiddlewaretoken:'{{csrf_token}}',
-        },
-        success: function (data) {
-            data.each(function () {
-                let tr_tag = document.createElement("tr");
-                let td_time_tag = document.createElement("td");
-                let td_money_tag = document.createElement("td");
-                $(tr_tag).appendTo("table");
-                $(td_time_tag).text($(this)["time"]);
-                $(td_money_tag).text($(this)["money"]);
-                $(tr_tag).append(td_time_tag);
-                $(tr_tag).append(td_money_tag);
-            });
-
-        },
-        error: function (data) {
-            console.log(data)
-        }
+    $("button").click(function () {
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/v1/get_list/',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                start_time: $("#start_time").val(),
+                end_time: $("#end_time").val(),
+                csrfmiddlewaretoken: '{{csrf_token}}',
+            },
+            success: function (data) {
+                console.log(data);
+                if(data.code===201){
+                    $.each(data.data,function (obj) {
+                    console.log(obj,typeof(obj));
+                    console.log(data, typeof(data));
+                    let tr_tag = document.createElement("tr");
+                    let td_time_tag = document.createElement("td");
+                    let td_money_tag = document.createElement("td");
+                    $(tr_tag).appendTo("table");
+                    $(td_time_tag).text($(this)["time"]);
+                    $(td_money_tag).text($(this)["money"]);
+                    $(tr_tag).append(td_time_tag);
+                    $(tr_tag).append(td_money_tag);
+                });
+                }
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        })
     })
-
 </script>
 
 </body>
