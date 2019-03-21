@@ -1,4 +1,5 @@
 import time
+from django.shortcuts import HttpResponse
 
 
 def get_gender(arg):
@@ -24,10 +25,21 @@ def get_time_format(arg):
     try:
         format_time_str = time.strptime(arg, "%Y-%m-%d %H:%M:%S")
     except ValueError:
-        struct_time = time.strptime(arg, "%Y-%m-%d")
-        return time.mktime(struct_time)
-    return time.mktime(format_time_str)
+        try:
+            struct_time = time.strptime(arg, "%Y-%m-%d")
+            return time.mktime(struct_time) * 1000
+        except Exception as e:
+            print("exception get_time_format", e)
+            return ""
+    return time.mktime(format_time_str) * 1000
 
-str = "2019-01-12 21:23:12"
-# struct_time = time.strptime(str, "%Y-%m-%d")
-print(get_time_format(str))
+
+def get_str_time(arg):
+    division_obj = arg / 1000
+    try:
+        struct_time = time.localtime(division_obj)
+    except Exception as e:
+        print("exception get_str_time", e)
+        return HttpResponse(str(e))
+    return time.strftime("%Y-%m-%d %H:%M:%S", struct_time)
+

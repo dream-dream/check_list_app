@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="panel">
     <div class="panel-heading">流水每日金额汇总</div>
     <div class="container col-md-offset-6 col-md-6">
         <div class="row">
@@ -34,12 +34,8 @@
     <table class="table">
         <th>time</th>
         <th>money</th>
-        <tr class="item">
-            <td class="time">时间 年月日 A</td>
-            <td class="money">200</td>
-        </tr>
-
     </table>
+
 </div>
 
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -56,24 +52,31 @@
                 csrfmiddlewaretoken: '{{csrf_token}}',
             },
             success: function (data) {
-                console.log(data);
-                if(data.code===201){
-                    $.each(data.data,function (obj) {
-                    console.log(obj,typeof(obj));
-                    console.log(data, typeof(data));
-                    let tr_tag = document.createElement("tr");
-                    let td_time_tag = document.createElement("td");
-                    let td_money_tag = document.createElement("td");
-                    $(tr_tag).appendTo("table");
-                    $(td_time_tag).text($(this)["time"]);
-                    $(td_money_tag).text($(this)["money"]);
-                    $(tr_tag).append(td_time_tag);
-                    $(tr_tag).append(td_money_tag);
-                });
+                if (data.code === 201) {
+                    $.each(data.data_detail, function (digit, recive_data) {
+                        let tr_tag = document.createElement("tr");
+                        let td_time_tag = document.createElement("td");
+                        let td_money_tag = document.createElement("td");
+                        $(tr_tag).appendTo("table");
+                        $(td_time_tag).text(recive_data.time);
+                        $(td_money_tag).text(recive_data.money);
+                        $(tr_tag).append(td_time_tag);
+                        $(tr_tag).append(td_money_tag);
+                    });
+                     let tr_tag = document.createElement("tr");
+                        let td_total_tag = document.createElement("td");
+                        let td_num_tag = document.createElement("td");
+                        $(tr_tag).appendTo("table");
+                        $(td_total_tag).text("total");
+                        $(td_total_tag).css({"font-size": "30px"});
+                        $(td_num_tag).text(data.total_money);
+                        $(td_num_tag).css({"font-size": "30px"});
+                        $(tr_tag).append(td_total_tag);
+                        $(tr_tag).append(td_num_tag);
                 }
             },
             error: function (data) {
-                console.log(data)
+                alert(data, "something was wrong, checkout ")
             }
         })
     })

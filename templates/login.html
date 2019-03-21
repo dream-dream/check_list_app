@@ -48,24 +48,20 @@
                     csrfmiddlewaretoken: '{{csrf_token}}',
                 },
                 success: function (data) {
-                    console.log(data, data.code);
-                    if(data.code===500){
+                    if (data.code === 500) {
                         $("#name").val("");
                         $("#pwd").val("");
                     }
-                    alert(data.msg);
-                    console.log("request was congratulations!")
+                    alert(data.msg,"request was congratulations!");
                 },
-                error: function (XMLHttpRequest,arg,response) {
-                    console.log(XMLHttpRequest);
-                    console.log(arg);
-                    console.log("something was wrong,checkout again")
+                error: function (XMLHttpRequest, arg, response) {
+                    alert("something was wrong,checkout again")
                 },
-                complete:function (XMLHttpRequest, data) {
+                complete: function (XMLHttpRequest, data) {
                 }
             })
         } catch (e) {
-            console.log(e)
+            alert(e)
         }
 
     })

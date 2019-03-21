@@ -130,12 +130,8 @@
                 $("#salary").val(data.salary);
                 $("#pwd").val("");
                 $("#re_password").val("");
-                //console.log(data, typeof(data));
-                //console.log(data.code);
-                alert(msg);
-                console.log("request was congratulations!")
+                alert(msg, "request was congratulations!");
             }, error: function (data) {
-                console.log(data, typeof(data));
                 alert("something was wrong ,please check out!")
             }, complete: function () {
 

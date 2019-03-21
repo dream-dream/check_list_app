@@ -8,7 +8,7 @@ import time
 import random
 # from django.views.decorators.csrf import csrf_exempt
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import get_salary, get_gender, get_time_format
+from bill_count_app.form import get_salary, get_gender, get_time_format, get_str_time
 
 # Create your views here.
 finally_response_data = {"code": 500, "msg": "register failed，please try again"}
@@ -35,7 +35,6 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('pwd')
         user_object = User.objects.filter(username=username, pwd=password).first()
-        print("user message", username, password, user_object)
         if user_object:
             # set login status into session, for the other interface check is login or not
             random_char = random.choice(
@@ -88,64 +87,71 @@ def register(request):
         data["job"] = job
         data["salary"] = salary
         # todo checkout these fields
-        if username is "" or phone_num is "" or pwd is "":
-            data["code"] = 404
-            data["msg"] = "sorry, username and telephone and password are required"
-            data = json.dumps(data)
-            return HttpResponse(data)
+        try:
+            if username is "" or phone_num is "" or pwd is "":
+                data["code"] = 404
+                data["msg"] = "sorry, username and telephone and password are required"
+                data = json.dumps(data)
+                return HttpResponse(data)
 
-        is_username = User.objects.filter(username=username).exists()
+            is_username = User.objects.filter(username=username).exists()
 
-        if is_username:
-            data["code"] = 401
-            data["msg"] = "the username already exist, could you try another one?"
-            data["username"] = ""
-            data = json.dumps(data)
-            return HttpResponse(data)
-        if username is not "" and (len(username) < 5 or len(username) > 15):
-            data["code"] = 401
-            data["msg"] = "the username at least got 5 bits,at most got 15 bits"
-            data["username"] = ""
-            data = json.dumps(data)
-            return HttpResponse(data)
-        # todo use re model to checkout the telephone field
-        if phone_num.isdigit():
-            phone_num_li = re.findall('^1[345789]\d{9}$', phone_num)
-            phone_num = phone_num_li[0]
-            if not phone_num:
+            if is_username:
+                data["code"] = 401
+                data["msg"] = "the username already exist, could you try another one?"
+                data["username"] = ""
+                data = json.dumps(data)
+                return HttpResponse(data)
+            if username is not "" and (len(username) < 5 or len(username) > 15):
+                data["code"] = 401
+                data["msg"] = "the username at least got 5 bits,at most got 15 bits"
+                data["username"] = ""
+                data = json.dumps(data)
+                return HttpResponse(data)
+            # todo use re model to checkout the telephone field
+            if phone_num.isdigit():
+                phone_num_li = re.findall('^1[345789]\d{9}$', phone_num)
+                phone_num = phone_num_li[0]
+                if not phone_num:
+                    data["code"] = 402
+                    data["msg"] = "the telephone number was wrong, could you try again"
+                    data["phone_num"] = ""
+                    data = json.dumps(data)
+                    return HttpResponse(data)
+            elif not phone_num.isdigit() and "":
                 data["code"] = 402
-                data["msg"] = "the telephone number was wrong, could you try again"
+                data["msg"] = "the format of telephone number must be all digits,come on!"
                 data["phone_num"] = ""
                 data = json.dumps(data)
                 return HttpResponse(data)
-        elif not phone_num.isdigit() and "":
-            data["code"] = 402
-            data["msg"] = "the format of telephone number must be all digits,come on!"
-            data["phone_num"] = ""
-            data = json.dumps(data)
+            # todo checkout the power of pwd, got digit & character & symbol
+            if pwd != re_pwd:
+                data["code"] = 400
+                data["msg"] = "two passwords inconsistent，try again"
+                data = json.dumps(data)
+                return HttpResponse(data)
+            pwd_li = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
+            pwd = pwd_li[0]
+            if not pwd and "":
+                data["code"] = 400
+                data["msg"] = \
+                    "the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits"
+                data = json.dumps(data)
+                return HttpResponse(data)
+        except Exception as e:
+            finally_response_data["code"] = 400
+            finally_response_data["msg"] = str(e) + " some field was wrong, try again"
+            data = json.dumps(finally_response_data)
             return HttpResponse(data)
-        # todo checkout the power of pwd, got digit & character & symbol
-        if pwd != re_pwd:
-            data["code"] = 400
-            data["msg"] = "two passwords inconsistent，try again"
-            data = json.dumps(data)
-            return HttpResponse(data)
-        pwd_li = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
-        pwd = pwd_li[0]
-        if not pwd and "":
-            data["code"] = 400
-            data["msg"] = \
-                "the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits"
-            data = json.dumps(data)
-            return HttpResponse(data)
-
         try:
             user_object = User.objects.create(username=username, phone_num=phone_num, pwd=pwd)
             user_item = UserDetail.objects.create(user_id_id=user_object.pk, gender=get_gender(gender), age=age,
                                                   job=job, salary=get_salary(salary))
         except Exception as e:
-            print("exception", str(e))
-            return HttpResponse(finally_response_data)
+            finally_response_data["code"] = 300
+            finally_response_data["msg"] = str(e) + "database failed, try again"
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
     finally_response_data["code"] = 200
     finally_response_data["msg"] = "congratulations"
     data = json.dumps(finally_response_data)
@@ -163,7 +169,6 @@ def input(request):
         money = request.POST.get("money")
         remarks = request.POST.get("remarks")
         this_moment = float(request.POST.get("time"))  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
-        print("time", this_moment, type(this_moment))
         user_id = request.session.get("id")
         try:
             # bill_obj = BillDetail.objects.filter(user_id_id=user_id).exists()
@@ -171,13 +176,55 @@ def input(request):
             #     BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
             BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
         except Exception as e:
-            print('Exception', str(e))
             finally_response_data["code"] = 500
-            finally_response_data["msg"] = "submit failed，try again"
+            finally_response_data["msg"] = str(e) + "database failed，try again"
             data = json.dumps(finally_response_data)
             return HttpResponse(data)
     finally_response_data["code"] = 200
     finally_response_data["msg"] = "congratulation, you wrote a bill tip"
+    data = json.dumps(finally_response_data)
+    return HttpResponse(data)
+
+@check_login
+def get_list(request):
+    """
+    获取指定时间内的账单总金额，并且把每天的总额计算出来
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        user_id = request.session.get("id")
+        start_obj = request.POST.get("start_time")
+        end_obj = request.POST.get("end_time")
+        start_time = get_time_format(start_obj)
+        end_time = get_time_format(end_obj)
+        # get data what we want from database
+        try:
+            sum_query_set = BillDetail.objects.filter(user_id_id=user_id,
+                                                      time__range=(start_time, end_time)).values_list("time",
+                                                                                                      "money").all()
+        except Exception as e:
+            finally_response_data["code"] = 300
+            finally_response_data["msg"] = str(e) + "database failed, try again"
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
+        finally_data_format = []
+        start_num = 0
+        for query_object in sum_query_set:
+            sum_money_dict = {}
+            sum_money_dict["time"] = get_str_time(query_object[0])
+            sum_money_dict["money"] = query_object[1]
+            start_num += query_object[1]
+            finally_data_format.append(sum_money_dict)
+        #  integrate data format
+        finally_response_data["code"] = 201
+        finally_response_data["msg"] = "you got what you want"
+        finally_response_data["data_detail"] = finally_data_format
+        finally_response_data["total_money"] = start_num
+        data = json.dumps(finally_response_data)
+        return HttpResponse(data)
+    finally_response_data["code"] = 200
+    finally_response_data["msg"] = "congratulations"
     data = json.dumps(finally_response_data)
     return HttpResponse(data)
 
@@ -196,69 +243,28 @@ def get_detail(request):
         end_time = request.POST.get("end_time")
         end_time = get_time_format(end_time)
         try:
-            detail_query_set = BillDetail.objects.filter(user_id_id=user_id).filter(
-                Q(
-                    Q(time__gt=start_time) & Q(time__lt=end_time)
-                ) |
-                Q(time=start_time) | Q(time=end_time)
-            ).values("time", "remarks", "money")
+            detail_query_set = BillDetail.objects.filter(user_id_id=user_id,
+                                                         time__range=(start_time, end_time)).values_list("time",
+                                                                                                         "remarks",
+                                                                                                         "money").all()
         except Exception as e:
-            print("Exception", str(e))
-            return HttpResponse("database was wrong, try again")
-        detail_query_dict = {}
-        detail_query_dict[user_id] = detail_query_set
+            finally_response_data["code"] = 300
+            finally_response_data["msg"] = str(e) + "database failed, try again"
+            data = json.dumps(finally_response_data)
+            return HttpResponse(data)
+        detail_query_li = []
         begin_num = 0
         for query_object in detail_query_set:
-            begin_num += query_object.money
-        detail_query_dict[sum] = begin_num
-        data = json.dumps(detail_query_dict)
-        return HttpResponse(data)
-    finally_response_data["code"] = 200
-    finally_response_data["msg"] = "congratulations"
-    data = json.dumps(finally_response_data)
-    return HttpResponse(data)
-
-
-@check_login
-def get_list(request):
-    """
-    获取指定时间内的账单总金额，并且把每天的总额计算出来
-    :param request:
-    :return:
-    """
-    if request.method == 'POST':
-        user_id = request.session.get("id")
-        start_time = request.POST.get("start_time")
-        start_time = get_time_format(start_time)
-        end_time = request.POST.get("end_time")
-        end_time = get_time_format(end_time)
-        # get data what we want from database
-        try:
-            sum_query_set = BillDetail.objects.filter(user_id_id=user_id).filter(time__in=(start_time, end_time)).values("time", "money")
-            print("get all message", sum_query_set, type(sum_query_set))
-        except Exception as e:
-            print("exception", str(e))
-            return HttpResponse("database was wrong, try again")
-        # total the money that transaction on the same day
-        sum_money_dict = {}
-        start_num = 0
-        for query_object in sum_query_set:
-            if query_object["time"].date() not in sum_money_dict:
-                sum_money_dict[query_object["time"].date()] = query_object["money"]
-            else:
-                sum_money_dict[query_object["time"].date()] += query_object["money"]
-            start_num += query_object["money"]
-        #  integrate data format
-        finally_data_format = []
-        for item in sum_money_dict.items():
-            each_dict = {}
-            each_dict["time"] = item[0]
-            each_dict["money"] = item[1]
-            finally_data_format.append(each_dict)
-        finally_data_format.append({"total_money": start_num})
+            dic_inner_query = {}
+            dic_inner_query["time"] = get_str_time(query_object[0])
+            dic_inner_query["remarks"] = query_object[1]
+            dic_inner_query["money"] = query_object[2]
+            begin_num += query_object[2]
+            detail_query_li.append(dic_inner_query)
         finally_response_data["code"] = 201
         finally_response_data["msg"] = "you got what you want"
-        finally_response_data["data"] = finally_data_format
+        finally_response_data["data_detail"] = detail_query_li
+        finally_response_data["total"] = begin_num
         data = json.dumps(finally_response_data)
         return HttpResponse(data)
     finally_response_data["code"] = 200

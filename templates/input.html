@@ -49,13 +49,10 @@
                 csrfmiddlewaretoken: '{{csrf_token}}',
             },
             success: function (data) {
-                console.log(data);
-                console.log("congratulations")
+                alert("congratulations! you just wrote a tip of bill list")
             },
             error: function (XMLHttpRequest,arg,response) {
-                    console.log(XMLHttpRequest);
-                    console.log(arg);
-                    console.log("something was wrong,checkout again")
+                    alert("something was wrong,checkout again")
             }
 
         })

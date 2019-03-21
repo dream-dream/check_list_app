@@ -63,7 +63,7 @@ object_datetime = datetime.datetime.now()
 #         dic[item['time']] = item['money']
 #     else:
 #         dic[item['time']] += item['money']
-        # print(dic[item['time']])
+# print(dic[item['time']])
 # print(dic)
 # finally_li = []
 # for item in dic.items():
@@ -98,13 +98,14 @@ object_datetime = datetime.datetime.now()
 li = ["a", "b", "c"]
 import random
 import time, datetime
+
 time_obj = datetime.datetime.now()
 random_char = random.choice(
     [chr(random.randint(65, 90)), chr(random.randint(97, 122))])
 # print(random_char)
 start_str = ""
 for i in range(5):
-    provisional_str = str(random.randrange(10, 100))+random_char
+    provisional_str = str(random.randrange(10, 100)) + random_char
     start_str += provisional_str
 # print("start_str",start_str)
 time_stamp = time.time()
@@ -118,6 +119,7 @@ strf_time_obj = time.strftime("%Y-%m-%d ||%X", struc_time)
 # print(time.asctime(), type(time.asctime()))  # Tue Mar 19 17:52:27 2019 <class 'str'>
 # print("random-str-obj", time.asctime()+start_str)
 import calendar
+
 cal = calendar.month(2016, 1)
 # print("以下输出2016年1月份的日历:")
 # print(cal)
@@ -134,11 +136,24 @@ timeStamp = 1550636623.0
 structTime = time.gmtime(timeStamp)  # 2019-02-20 04:23:43
 # print(time.strftime("%Y-%m-%d %H:%M:%S", structTime))
 import re
+
 phone_num = re.findall('^1[345789]\d{9}$', "18978654454")
 # print(phone_num, type(phone_num))  # ['18978654454'] <class 'list'>
 search_obj = re.search('a', 'aeva egon yuan')
-print(search_obj.group())
+# print(search_obj.group())
 match_obj = re.match('a', 'aeva egon yuan')
-print(match_obj.group())
+# print(match_obj.group())
 findall_obj = re.findall('a', 'aeva egon yuan')
-print(findall_obj)
+# print(findall_obj)
+# print(time_stamp)  # 1553170087.56557
+fore_end = 1553169361.259  # 1553169361259  strftime:"2019-03-21 19:56:01"
+test_obj = 1553126400.0
+# print(time_stamp < fore_end)
+database_time = 1553170704.840  # 数据库查出来的时间戳格式
+struct = time.localtime(database_time)
+# print(time.strftime("%Y-%m-%d %H:%M:%S", struct))
+
+dic_data = {"22": "a", "33": "b", 44:"q"}
+for i in dic_data.items():
+    # print(i, type(i))
+    print(i[0], i[1])

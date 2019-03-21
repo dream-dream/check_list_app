@@ -19,6 +19,7 @@
                     <div class="col-sm-3"><input id="start_time" class="form-control" type="text" name="money"></div>
                     <label for="remarks" class="col-sm-2">end_time</label>
                     <div class="col-sm-3"><input type="text" class="form-control" id="end_time" name="remarks"></div>
+                    <button value="submit" type="button" class="btn btn-primary">submit</button>
                 </div>
             </form>
         </div>
@@ -27,12 +28,6 @@
         <th>time</th>
         <th>remarks</th>
         <th>money</th>
-        <tr>
-            <td>具体时间年月日 A</td>
-            <td>备注信息</td>
-            <td>200</td>
-        </tr>
-
     </table>
 </div>
 
@@ -40,34 +35,49 @@
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
-    $.ajax({
-        url: "http://127.0.0.1:8000/api/v1/get_detail/",
-        type: "POST",
-        dataType: "json",
-        data: {
-            start_time: $("#start_time").val(),
-            end_time: $("#end_time").val(),
-            csrfmiddlewaretoken: '{{csrf_token}}',
-        },
-        success: function (data) {
-            data.each(function () {
-                let tr_tag = document.createElement("tr");
-                let td_time = document.createElement("td");
-                let td_remarks = document.createElement("td");
-                let td_money = document.createElement("td");
-                $(tr_tag).appendTo("table");
-                $(td_time).text($(this)["time"]);
-                $(td_remarks).text($(this)["remarks"]);
-                $(td_money).text($(this)["money"]);
-                $(tr_tag).append(td_time);
-                $(tr_tag).append(td_remarks);
-                $(tr_tag).append(td_money);
-            })
-        },
-        error: function (errorMsg) {
-            console.log(errorMsg)
-        }
+    $(".btn").click(function () {
+        $.ajax({
+            url: "http://127.0.0.1:8000/api/v1/get_detail/",
+            type: "POST",
+            dataType: "json",
+            data: {
+                start_time: $("#start_time").val(),
+                end_time: $("#end_time").val(),
+                csrfmiddlewaretoken: '{{csrf_token}}',
+            },
+            success: function (data) {
+                if (data.code === 201) {
+                    $.each(data.data_detail, function (digit, recive_data) {
+                        let tr_tag = document.createElement("tr");
+                        let td_time = document.createElement("td");
+                        let td_remarks = document.createElement("td");
+                        let td_money = document.createElement("td");
+                        $(tr_tag).appendTo("table");
+                        $(td_time).text(recive_data.time);
+                        $(td_remarks).text(recive_data.remarks);
+                        $(td_money).text(recive_data.money);
+                        $(tr_tag).append(td_time);
+                        $(tr_tag).append(td_remarks);
+                        $(tr_tag).append(td_money);
+                    });
+                    let tr_tag = document.createElement("tr");
+                    let td_total_tag = document.createElement("td");
+                    let td_num_tag = document.createElement("td");
+                    $(tr_tag).appendTo("table");
+                    $(td_total_tag).text("total");
+                    $(td_total_tag).css({"font-size": "30px"});
+                    $(td_num_tag).text(data.total);
+                    $(td_num_tag).css({"font-size": "30px"});
+                    $(tr_tag).append(td_total_tag);
+                    $(tr_tag).append(td_num_tag);
+                }
+            },
+            error: function (errorMsg) {
+                alert(errorMsg)
+            }
+        })
     })
+
 </script>
 
 </body>
