@@ -18,9 +18,9 @@ def get_salary(arg):
 
 def get_time_format(arg):
     """
-    时间格式转换
-    :param arg: 时间字符串
-    :return: 时间戳
+    exchange the format of the time
+    :param arg: str of time
+    :return: timestamp
     """
     try:
         format_time_str = time.strptime(arg, "%Y-%m-%d %H:%M:%S")

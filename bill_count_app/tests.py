@@ -8,10 +8,10 @@ if digit.isdigit():
 # print(type(digit))
 import time, datetime, _strptime
 
-time_str = time.time()  # 获取时间戳
+time_str = time.time()
 lt_time = 155197265.092492
 # print("strftime", time_str)
-time_loc = time.localtime(time_str)  # 把时间戳转换成结构化时间
+time_loc = time.localtime(time_str)  # turn timestamp to strucktime
 lt_local_time = time.localtime(lt_time)
 
 begin_time_str = time.gmtime(time_str)
@@ -22,7 +22,7 @@ fir_lt_time = time.gmtime(lt_time)
 # subtraction_time = time.gmtime(time_str - lt_time)
 # print("subtraction", subtraction_time)
 # print(time_loc, type(time_loc))
-# time_object = time.strftime('%Y-%m-%d %X', time_loc)  # 把结构化时间转换成便于阅读的时间字符串
+# time_object = time.strftime('%Y-%m-%d %X', time_loc)  # turn strucktime to str time
 # print(time_object, type(time_object))
 
 # begin_num = 0
@@ -121,7 +121,7 @@ strf_time_obj = time.strftime("%Y-%m-%d ||%X", struc_time)
 import calendar
 
 cal = calendar.month(2016, 1)
-# print("以下输出2016年1月份的日历:")
+# print("print calendar of 2016,Jan")
 # print(cal)
 
 time_str = "2019-2-20 12:23:43"
@@ -149,7 +149,7 @@ findall_obj = re.findall('a', 'aeva egon yuan')
 fore_end = 1553169361.259  # 1553169361259  strftime:"2019-03-21 19:56:01"
 test_obj = 1553126400.0
 # print(time_stamp < fore_end)
-database_time = 1553170704.840  # 数据库查出来的时间戳格式
+database_time = 1553170704.840  # timestamp from fore-end checkout
 struct = time.localtime(database_time)
 # print(time.strftime("%Y-%m-%d %H:%M:%S", struct))
 

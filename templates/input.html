@@ -36,7 +36,6 @@
 <script>
     //Response.header("Access-Control-Allow-Origin","*");
     timestamp = new Date().getTime();
-    //对于输入的内容在前端也可以进行校验，看你自己选择用什么方式
     $(".btn").click(function () {
         $.ajax({
             url: "http://127.0.0.1:8000/api/v1/input/",

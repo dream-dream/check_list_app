@@ -27,7 +27,7 @@ def check_login(func):
 
 def login(request):
     """
-    登陆
+    login
     :param request:
     :return:
     """
@@ -64,7 +64,7 @@ def login(request):
 
 def register(request):
     """
-    注册
+    register
     :param request:
     :return:
     """
@@ -161,7 +161,7 @@ def register(request):
 @check_login
 def input(request):
     """
-    提交记账信息
+    submit bill tips
     :param request:
     :return:
     """
@@ -188,7 +188,7 @@ def input(request):
 @check_login
 def get_list(request):
     """
-    获取指定时间内的账单总金额，并且把每天的总额计算出来
+    get list of bill tips
     :param request:
     :return:
     """
@@ -232,7 +232,7 @@ def get_list(request):
 @check_login
 def get_detail(request):
     """
-    获取指定时间内的账单信息
+    get detail of bill tips
     :param request:
     :return:
     """
