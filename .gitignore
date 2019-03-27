@@ -3,7 +3,4 @@ bin/
 *.sqlite3
 *.settings/
 *.log
-<<<<<<< HEAD
 *.xml
-=======
->>>>>>> 0989062f5c6c1327d8807183d0b202b3d515b07f
