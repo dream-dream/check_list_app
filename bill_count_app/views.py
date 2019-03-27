@@ -5,12 +5,14 @@ from functools import wraps
 import re
 import json
 import time
+import logging
 import random
 # from django.views.decorators.csrf import csrf_exempt
 from bill_count_app.models import User, UserDetail, BillDetail
 from bill_count_app.form import get_salary, get_gender, get_time_format, get_str_time
 
 # Create your views here.
+logger = logging.getLogger(__name__)
 finally_response_data = {"code": 500, "msg": "register failed，please try again"}
 
 
@@ -204,6 +206,7 @@ def get_list(request):
                                                       time__range=(start_time, end_time)).values_list("time",
                                                                                                       "money").all()
         except Exception as e:
+            logger.error(str(e))
             finally_response_data["code"] = 300
             finally_response_data["msg"] = str(e) + "database failed, try again"
             data = json.dumps(finally_response_data)
@@ -248,6 +251,7 @@ def get_detail(request):
                                                                                                          "remarks",
                                                                                                          "money").all()
         except Exception as e:
+            logger.error(str(e))
             finally_response_data["code"] = 300
             finally_response_data["msg"] = str(e) + "database failed, try again"
             data = json.dumps(finally_response_data)

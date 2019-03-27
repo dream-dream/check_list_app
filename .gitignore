@@ -1,0 +1,7 @@
+*.pyc
+bin/
+*.sqlite3
+*.settings/
+*.log
+*.xml
+

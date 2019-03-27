@@ -116,7 +116,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'test',
         'USER': 'root',
-        'PASSWORD': 'zn6205938*',
+        'PASSWORD': '********',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -160,5 +160,99 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+<<<<<<< HEAD
 STATIC_ROOT = os.path.join(BASE_DIR, "allstatic")
 
+=======
+# logging setting
+
+BASE_LOG_DIR = os.path.join(BASE_DIR, "check_list_app_logs")
+if not os.path.isdir(BASE_LOG_DIR):
+    os.mkdir(BASE_LOG_DIR)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s][%(threadName)s:%(thread)d][task_id:%(name)s][%(filename)s:%(lineno)d]'
+                      '[%(levelname)s][%(message)s]'
+        },
+        'simple': {
+            'format': '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s'
+        },
+        'collect': {
+            'format': '%(message)s'
+        }
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],  # print log-message on the stream only Django debug=True
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024 * 1024 * 5,
+            'formatter': 'standard',
+            'backupCount': 3,
+            'filename': os.path.join(BASE_LOG_DIR, 'api_debug.log', ),
+            'encoding': 'utf8',
+        },
+        'SF': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',  # save logging files auto cut file
+            'filename': os.path.join(BASE_LOG_DIR, "check_list_sf_info.log"),  # logging file
+            'maxBytes': 1024 * 1024 * 50,  # size of logging file is 50M
+            'backupCount': 3,  # xx.log --> xx.log.1 --> xx.log.2 --> xx.log.3
+            'formatter': 'standard',
+            'encoding': 'utf-8',
+        },
+        'TF': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',  # audo cut file depend on time
+            'filename': os.path.join(BASE_LOG_DIR, "check_list_tf_info.log"),  # logging file
+            'backupCount': 3,  # xx.log --> xx.log.2018-08-23_00-00-00 --> xx.log.2018-08-24_00-00-00 --> ...
+            'when': 'D',  # cut every day, there are other options -->S/ M/ H/ D/ W0-W6/week(0=Monday) midnight/
+            # if you don't set the time,default on midnight
+            'formatter': 'standard',
+            'encoding': 'utf-8',
+        },
+        'error': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',  # save logging files,auto cut
+            'filename': os.path.join(BASE_LOG_DIR, "check_list_app_err.log"),  # logger file
+            'maxBytes': 1024 * 1024 * 5,  # 日志大小 50M
+            'backupCount': 5,
+            'formatter': 'standard',
+            'encoding': 'utf-8',
+        },
+        'collect': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',  # save logging files,auto cut
+            'filename': os.path.join(BASE_LOG_DIR, "check_list_app_collect.log"),
+            'maxBytes': 1024 * 1024 * 50,  # 50M
+            'backupCount': 5,
+            'formatter': 'collect',
+            'encoding': "utf-8"
+        }
+    },
+    'loggers': {
+        'django': {  # default logger application setting
+            'handlers': ['error', 'default', 'TF', ],  # when u put online, just remove 'console'
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'collect': {  # only handle for 'collect'
+            'handlers': ['console', 'collect'],
+            'level': 'INFO',
+        }
+    },
+}
+>>>>>>> 0184bce71a459e4944cf13e276af93361eb7fb53
