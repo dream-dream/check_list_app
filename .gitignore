@@ -1,0 +1,4 @@
+*.pyc
+bin/
+*.sqlite3
+*.settings/
