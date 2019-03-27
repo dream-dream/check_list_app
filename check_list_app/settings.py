@@ -116,7 +116,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'test',
         'USER': 'root',
-        'PASSWORD': '********',
+        'PASSWORD': 'zn6205938*',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -160,10 +160,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-<<<<<<< HEAD
 STATIC_ROOT = os.path.join(BASE_DIR, "allstatic")
 
-=======
 # logging setting
 
 BASE_LOG_DIR = os.path.join(BASE_DIR, "check_list_app_logs")
@@ -255,4 +253,3 @@ LOGGING = {
         }
     },
 }
->>>>>>> 0184bce71a459e4944cf13e276af93361eb7fb53
