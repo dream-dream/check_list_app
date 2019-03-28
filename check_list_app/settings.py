@@ -164,6 +164,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "allstatic")
 
 # logging setting
 
+
 BASE_LOG_DIR = os.path.join(BASE_DIR, "check_list_app_logs")
 if not os.path.isdir(BASE_LOG_DIR):
     os.mkdir(BASE_LOG_DIR)
@@ -243,7 +244,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {  # default logger application setting
-            'handlers': ['error', 'default', 'TF', ],  # when u put online, just remove 'console'
+            'handlers': ['console', 'error', 'default', 'TF', ],  # when u put online, just remove 'console'
             'level': 'DEBUG',
             'propagate': False,
         },

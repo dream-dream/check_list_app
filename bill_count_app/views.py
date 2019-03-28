@@ -147,6 +147,7 @@ def register(request):
             return HttpResponse(data)
         try:
             user_object = User.objects.create(username=username, phone_num=phone_num, pwd=pwd)
+            logger.debug("user_object", user_object)
             user_item = UserDetail.objects.create(user_id_id=user_object.pk, gender=get_gender(gender), age=age,
                                                   job=job, salary=get_salary(salary))
         except Exception as e:
@@ -186,6 +187,7 @@ def input(request):
     finally_response_data["msg"] = "congratulation, you wrote a bill tip"
     data = json.dumps(finally_response_data)
     return HttpResponse(data)
+
 
 @check_login
 def get_list(request):
