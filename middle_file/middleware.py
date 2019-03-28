@@ -15,6 +15,6 @@ class MiddleCors(MiddlewareMixin):
         ret = HttpResponse(response)
         ret['Access-Control-Allow-Origin'] = '*'
         ret["Access-Control-Allow-Methods"] = "POST,GET,OPTION,PUT,DELETE,PATCH"
-        return ret
+        return response
         # else:
         #     return redirect("login/")
