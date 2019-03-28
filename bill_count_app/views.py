@@ -147,8 +147,8 @@ def register(request):
             return HttpResponse(data)
         try:
             user_object = User.objects.create(username=username, phone_num=phone_num, pwd=pwd)
-            user_item = UserDetail.objects.create(user_id_id=user_object.pk, gender=get_gender(gender), age=age,
-                                                  job=job, salary=get_salary(salary))
+            logger.debug("user_object", user_object)
+	    user_item = UserDetail.objects.create(user_id_id=user_object.pk, gender=get_gender(gender), age=age, job=job, salary=get_salary(salary))
         except Exception as e:
             finally_response_data["code"] = 300
             finally_response_data["msg"] = str(e) + "database failed, try again"

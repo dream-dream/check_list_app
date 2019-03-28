@@ -244,7 +244,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {  # default logger application setting
-            'handlers': ['error', 'default', 'TF', ],  # when u put online, just remove 'console'
+            'handlers': ['console', 'error', 'default', 'TF', ],  # when u put online, just remove 'console'
             'level': 'DEBUG',
             'propagate': False,
         },
