@@ -4,4 +4,4 @@ bin/
 *.settings/
 *.log
 *.xml
-
+migrations/
