@@ -77,7 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middle_file.middleware.MiddleCors',
+    # 'middle_file.middleware.MiddleCors',
 ]
 
 ROOT_URLCONF = 'check_list_app.urls'

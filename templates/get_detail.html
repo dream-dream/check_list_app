@@ -37,7 +37,7 @@
 <script>
     $(".btn").click(function () {
         $.ajax({
-            url: "http://127.0.0.1:8000/api/v1/get_detail/",
+            url: "/api/v1/get_detail/",
             type: "POST",
             dataType: "json",
             data: {
@@ -73,7 +73,7 @@
                 }
             },
             error: function (errorMsg) {
-                console.log(errorMsg,"there is fore-end error: something was wrong ,please check out!")
+                //console.log(errorMsg,"there is fore-end error: something was wrong ,please check out!")
 		alert(errorMsg, "there is fore-end error: something was wrong ,please check out!")
             }
         })
