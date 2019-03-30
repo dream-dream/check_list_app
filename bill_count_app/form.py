@@ -1,5 +1,14 @@
 import time
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, redirect
+
+
+class CheckLogin():
+    def check(self, request):
+        user_id = request.session.get("id")
+        if user_id and request.session.get("TokenStr"):
+            return user_id
+        else:
+            redirect("register/")
 
 
 def get_gender(arg):
@@ -42,4 +51,3 @@ def get_str_time(arg):
         print("exception get_str_time", e)
         return HttpResponse(str(e))
     return time.strftime("%Y-%m-%d %H:%M:%S", struct_time)
-
