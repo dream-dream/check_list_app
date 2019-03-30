@@ -1,13 +1,12 @@
-from django.shortcuts import render, HttpResponse, redirect
-from rest_framework.views import APIView
-from rest_framework import viewsets
-from django.http import JsonResponse
-from functools import wraps
 import re
 import json
 import time
 import random
 import logging
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse
+from rest_framework.views import APIView
+
 from bill_count_app.models import User, UserDetail, BillDetail
 from bill_count_app.form import get_salary, get_gender, get_time_format, get_str_time, CheckLogin
 from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, UserSerializer, BillDetailSerializer
@@ -15,40 +14,7 @@ from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, Us
 # Create your views here.
 logger = logging.getLogger(__name__)
 
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetailViewSet(viewsets.ModelViewSet):
-    queryset = UserDetail.objects.all()
-    serializer_class = UserDetailSerializer
-
-
-class BillApiView(viewsets.ModelViewSet):
-    queryset = BillDetail.objects.all()
-    serializer_class = BillDetailSerializer
-
-
 finally_response_data = {"code": 500, "msg": "register failed，please try again"}
-
-
-def check_login(func):
-    """
-    how to turn into class
-    :param func:
-    :return:
-    """
-
-    @wraps(func)
-    def inner(request, *args, **kwargs):
-        if request.session.get("id") and request.session.get("TokenStr"):
-            return func(request, *args, **kwargs)
-        else:
-            return redirect("api/v1/login/")
-
-    return inner
 
 
 class LoginApiView(APIView):
@@ -275,13 +241,18 @@ class BillApiView(APIView):
     #     return HttpResponse(data)
 
 
-@check_login
 def logout(request):
     """
     there is a bug, when you logout, you still could get all data, that couldn't happen any more
     :param request:
     :return:
     """
-    request.session.delete("id")
-    request.session.delete("TokenStr")
-    return HttpResponse("you are out")
+    user_id = CheckLogin.check
+    if user_id:
+        request.session.delete("id")
+        request.session.delete("TokenStr")
+        finally_response_data['code'] = 666
+        finally_response_data['msg'] = "you are out"
+        return JsonResponse(finally_response_data)
+    else:
+        return JsonResponse(finally_response_data)
