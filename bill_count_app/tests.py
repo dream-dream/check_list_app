@@ -154,6 +154,21 @@ struct = time.localtime(database_time)
 # print(time.strftime("%Y-%m-%d %H:%M:%S", struct))
 
 dic_data = {"22": "a", "33": "b", 44:"q"}
-for i in dic_data.items():
-    # print(i, type(i))
-    print(i[0], i[1])
+# for i in dic_data.items():
+#     # print(i, type(i))
+#     print(i[0], i[1])
+# l = []
+# if len(l) is 0:
+#     print('empty', l, type(l))
+#     emp_l = l[0]
+#     print(emp_l, type([emp_l]))
+# print(l, type(l))
+def get_gender(arg):
+    li_gender = ["female", "male"]
+    for item_gender, index in enumerate(li_gender):
+        print(item_gender, index)
+        if arg == item_gender:
+            return index
+
+get_obj = get_gender(1)
+print(get_obj)

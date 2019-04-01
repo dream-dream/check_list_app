@@ -13,16 +13,16 @@ class CheckLogin():
 
 def get_gender(arg):
     li_gender = ["female", "male"]
-    for item_gender in li_gender:
-        if arg == item_gender:
-            return li_gender.index(arg)
+    for index, item_gender in enumerate(li_gender):
+        if arg == index:
+            return item_gender
 
 
 def get_salary(arg):
     li_salary = ["<2000", '2000-5000', '5000-8000', '8000-10000', '10000<']
-    for item_salary in li_salary:
-        if arg == item_salary:
-            return li_salary.index(arg)
+    for index, item_salary in enumerate(li_salary):
+        if arg == index:
+            return item_salary
 
 
 def get_time_format(arg):

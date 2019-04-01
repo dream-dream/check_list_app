@@ -3,12 +3,13 @@ import json
 import time
 import random
 import logging
+from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
 from rest_framework.views import APIView
 
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import get_salary, get_gender, get_time_format, get_str_time, CheckLogin
+from bill_count_app.form import get_time_format, get_str_time, get_gender, get_salary, CheckLogin
 from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, UserSerializer, BillDetailSerializer
 
 # Create your views here.
@@ -24,10 +25,13 @@ class LoginApiView(APIView):
         :param request:
         :return:
         """
-        username = request.POST.get('username')
-        password = request.POST.get('pwd')
+        username = request.data.get('username')
+        password = request.data.get('pwd')
         user_object = User.objects.filter(username=username, pwd=password).first()
-        serializer = UserSerializer(data=user_object, context={"request": request})
+        data_dic = {}
+        data_dic["username"] = username
+        data_dic["pwd"] = password
+        serializer = UserSerializer(data=data_dic, context={"request": request})
         if serializer.is_valid():
             # set login status into session, for the other interface check is login or not
             random_char = random.choice(
@@ -56,87 +60,66 @@ class RegisterApiView(APIView):
         :param request:
         :return:
         """
-        data = {}
-        username = request.POST.get("username")
-        phone_num = request.POST.get("phone_num")
-        pwd = request.POST.get("pwd")
-        re_pwd = request.POST.get("re_pwd")
-        gender = request.POST.get("gender")  # set checkbox
-        age = request.POST.get("age")
-        job = request.POST.get("job")
-        salary = request.POST.get("salary")
-        data["username"] = username
-        data["phone_num"] = phone_num
-        data["pwd"] = pwd
-        data["re_pwd"] = re_pwd
-        data["gender"] = gender
-        data["age"] = age
-        data["job"] = job
-        data["salary"] = salary
+        user_data = {}
+        user_detail_data = {}
+        username = request.data.get("username")
+        phone_num = request.data.get("phone_num")
+        pwd = request.data.get("pwd")
+        re_pwd = request.data.get("re_pwd")
+        gender = request.data.get("gender")  # set checkbox
+        age = request.data.get("age")
+        job = request.data.get("job")
+        salary = request.data.get("salary")
+        user_data["username"] = username
+        user_data["phone_num"] = phone_num
+        user_data["pwd"] = pwd
+        user_data["re_pwd"] = re_pwd
+        user_detail_data["gender"] = gender
+        user_detail_data["age"] = age
+        user_detail_data["job"] = job
+        user_detail_data["salary"] = salary
         # todo checkout these fields
-        try:
-            if username is "" or phone_num is "" or pwd is "":
-                data["code"] = 404
-                data["msg"] = "sorry, username and telephone and password are required"
-                data = json.dumps(data)
-                return JsonResponse(data)
-
-            is_username = User.objects.filter(username=username).exists()
-
-            if is_username:
-                data["code"] = 401
-                data["msg"] = "the username already exist, could you try another one?"
-                data["username"] = ""
-                return JsonResponse(data)
-            if username is not "" and (len(username) < 5 or len(username) > 15):
-                data["code"] = 401
-                data["msg"] = "the username at least got 5 bits,at most got 15 bits"
-                data["username"] = ""
-                return JsonResponse(data)
-            # todo use re model to checkout the telephone field
-            if phone_num.isdigit():
-                phone_num_li = re.findall('^1[345789]\d{9}$', phone_num)
-                phone_num = phone_num_li[0]
-                if not phone_num:
-                    data["code"] = 402
-                    data["msg"] = "the telephone number was wrong, could you try again"
-                    data["phone_num"] = ""
-                    return JsonResponse(data)
-            elif not phone_num.isdigit() and "":
-                data["code"] = 402
-                data["msg"] = "the format of telephone number must be all digits,come on!"
-                data["phone_num"] = ""
-                return JsonResponse(data)
-            # todo checkout the power of pwd, got digit & character & symbol
-            if pwd != re_pwd:
-                data["code"] = 400
-                data["msg"] = "two passwords inconsistent，try again"
-                return JsonResponse(data)
-            pwd_li = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
-            pwd = pwd_li[0]
-            if not pwd and "":
-                data["code"] = 400
-                data["msg"] = \
-                    "the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits"
-                return JsonResponse(data)
-        except Exception as e:
-            finally_response_data["code"] = 400
-            finally_response_data["msg"] = str(e) + " some field was wrong, try again"
-            return JsonResponse(data)
-        try:
-            user_object = User.objects.create(username=username, phone_num=phone_num, pwd=pwd)
-            user_serializer = UserSerializer(data=user_object, context={"request": request})
-            logger.debug("user_object", user_object)
-            user_item = UserDetail.objects.create(user_id_id=user_object.pk, gender=get_gender(gender), age=age,
-                                                  job=job, salary=get_salary(salary))
-            user_detail_serializer = UserDetailSerializer(data=user_item, context={"request": request})
-        except Exception as e:
-            finally_response_data["code"] = 300
-            finally_response_data["msg"] = str(e) + "database failed, try again"
-            return JsonResponse(user_serializer.errors, user_detail_serializer.errors, status=finally_response_data)
+        if pwd != re_pwd:
+            finally_response_data["code"] = 404
+            finally_response_data["msg"] = "two passwords was different, try again"
+            return JsonResponse(finally_response_data)
+        user_ser = UserSerializer(data=user_data)
+        user_detail_ser = UserDetailSerializer(data=user_detail_data)
+        user_ser_bool = user_ser.is_valid()
+        user_detail_ser_bool = user_detail_ser.is_valid()
+        if user_ser_bool and user_detail_ser_bool:
+            logger.info(user_ser.data, user_detail_ser.data)
+            try:
+                with transaction.atomic():  # rollback
+                    user_object = User.objects.create(username=user_ser.data["username"],
+                                                      phone_num=user_ser.data["phone_num"], pwd=user_ser.data["pwd"])
+                    logger.debug("user_object", user_object)
+                    user_item = UserDetail.objects.create(user_id_id=user_object.pk,
+                                                          gender=user_detail_ser.data["gender"],
+                                                          age=user_detail_ser.data["age"],
+                                                          job=user_detail_ser.data["job"],
+                                                          salary=user_detail_ser.data["salary"])
+            except Exception as e:
+                finally_response_data["code"] = 500
+                finally_response_data["msg"] = str(e) + "/n database failed, try again"
+                return JsonResponse(finally_response_data)
+        else:
+            logger.error("errors-----msg", user_ser.errors, user_detail_ser.errors, "end--msg")
+            finally_response_data["code"] = 500
+            finally_response_data["msg"] = "is_valid failed, checkout errors"
+            return JsonResponse(finally_response_data)
+        for item in user_ser.data.items():
+            finally_response_data[item[0]] = item[1]
+        for item in user_detail_ser.data.items():
+            if item[0] == "salary":
+                finally_response_data[item[0]] = get_salary(item[1])
+            elif item[0] == "gender":
+                finally_response_data[item[0]] = get_gender(item[1])
+            else:
+                finally_response_data[item[0]] = item[1]
         finally_response_data["code"] = 200
         finally_response_data["msg"] = "congratulations"
-        return JsonResponse(user_serializer.data, user_detail_serializer.data, status=finally_response_data)
+        return JsonResponse(finally_response_data)
 
 
 class BillApiView(APIView):
@@ -146,9 +129,9 @@ class BillApiView(APIView):
         :param request:
         :return:
         """
-        money = request.POST.get("money")
-        remarks = request.POST.get("remarks")
-        this_moment = float(request.POST.get("time"))  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
+        money = request.data.get("money")
+        remarks = request.data.get("remarks")
+        this_moment = float(request.data.get("time"))  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
         user_id = CheckLogin.check
         try:
             bill_obj = BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
@@ -168,8 +151,8 @@ class BillApiView(APIView):
         :return:
         """
         user_id = CheckLogin.check
-        start_obj = request.POST.get("start_time")
-        end_obj = request.POST.get("end_time")
+        start_obj = request.data.get("start_time")
+        end_obj = request.data.get("end_time")
         start_time = get_time_format(start_obj)
         end_time = get_time_format(end_obj)
         # get data what we want from database
