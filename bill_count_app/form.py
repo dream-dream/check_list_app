@@ -2,13 +2,16 @@ import time
 from django.shortcuts import HttpResponse, redirect
 
 
-class CheckLogin():
-    def check(self, request):
-        user_id = request.session.get("id")
-        if user_id and request.session.get("TokenStr"):
-            return user_id
-        else:
-            redirect("register/")
+# from rest_framework.views import APIView
+class BaseResponse():
+    def __init__(self, code=200, data=None, error=None, *args, **kwargs):
+        self.code = code
+        self.data = data
+        self.error = error
+
+    @property
+    def dict(self):
+        return self.__dict__
 
 
 def get_gender(arg):
@@ -36,17 +39,21 @@ def get_time_format(arg):
     except ValueError:
         try:
             struct_time = time.strptime(arg, "%Y-%m-%d")
-            return time.mktime(struct_time) * 1000
+            return time.mktime(struct_time)
         except Exception as e:
             print("exception get_time_format", e)
             return ""
-    return time.mktime(format_time_str) * 1000
+    return time.mktime(format_time_str)
 
 
-def get_str_time(arg):
-    division_obj = arg / 1000
+def get_end_back_time(arg):
+    """
+    timestamp turn into time string
+    :param arg:
+    :return:
+    """
     try:
-        struct_time = time.localtime(division_obj)
+        struct_time = time.localtime(arg)
     except Exception as e:
         print("exception get_str_time", e)
         return HttpResponse(str(e))

@@ -2,11 +2,11 @@ import re
 import logging
 from rest_framework import serializers
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import get_gender, get_salary, get_str_time, get_time_format
+
 logging = logging.getLogger("__name__")
 
 
-class UserSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'pwd', 'phone_num')
@@ -22,7 +22,8 @@ class UserSerializer(serializers.ModelSerializer):
         pwd_li = re.findall('^[a-zA-Z]\w{5,14}$', attrs)
         pwd = pwd_li[0]
         if not pwd and "":
-            raise serializers.ValidationError("the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits")
+            raise serializers.ValidationError(
+                "the format was wrong，start with a letter，cantainer，at least 6 bits,at most 15 bits")
         return pwd
 
     def validate_phone_num(self, attrs):
@@ -49,15 +50,40 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = UserDetail
         fields = ["gender", "age", "job", "salary", ]
 
 
+class BillInputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BillDetail
+        fields = ["time", "money", "remarks", "user_id_id"]
+
+
+class UserSerializer(serializers.ModelSerializer):
+    # username = serializers.CharField(required=False)
+    # pwd = serializers.CharField(required=False)
+    # phone_num = serializers.CharField(required=False)
+
+    class Meta:
+        model = User
+        fields = ("username", "pwd", "phone_num")
+
+
 class BillDetailSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source="user_id.username")  # foreignkey field use argument--->source
+
+    # username = serializers.RelatedField(many=True, read_only=True)
+    # user_id = serializers.RelatedField(many=True, read_only=True)
+    # username = serializers.RegisterSerializer(
+    #     many=True,
+    #     read_only=True,
+        # view_name='user_id_id',
+    # )  # foreignkey field use argument--->source
+    # user = RegisterSerializer()
+    user = serializers.CharField(source="user_id__username")
 
     class Meta:
         model = BillDetail
-        fields = ["time", "money", "remarks", "user_id_id", "username"]
+        fields = ["time", "money", "remarks", "user_id_id", "user"]
+        # fields = "__all__"

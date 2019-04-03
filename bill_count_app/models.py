@@ -28,7 +28,7 @@ class UserDetail(models.Model):
 
 
 class BillDetail(models.Model):
-    user_id = models.ForeignKey(to=User, on_delete=models.DO_NOTHING)
+    user_id = models.ForeignKey(to=User, related_name='user', on_delete=models.DO_NOTHING)
     time = models.FloatField(verbose_name='time_for_now')
     money = models.FloatField(verbose_name='money')
     remarks = models.CharField(max_length=200, verbose_name='remarks')

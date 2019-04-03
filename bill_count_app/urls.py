@@ -5,4 +5,5 @@ urlpatterns = [
     path("login/", views.LoginApiView.as_view()),
     path("register/", views.RegisterApiView.as_view()),
     path("bill/", views.BillApiView.as_view()),
+    path("logout/", views.LogoutApiView.as_view())
 ]

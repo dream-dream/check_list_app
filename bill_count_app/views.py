@@ -5,17 +5,28 @@ import random
 import logging
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import HttpResponse
+from django.shortcuts import redirect
 from rest_framework.views import APIView
 
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import get_time_format, get_str_time, get_gender, get_salary, CheckLogin
-from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, UserSerializer, BillDetailSerializer
+from bill_count_app.form import get_time_format, get_gender, get_salary, get_end_back_time, \
+    BaseResponse
+from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, RegisterSerializer, BillInputSerializer, \
+    BillDetailSerializer
 
 # Create your views here.
 logger = logging.getLogger(__name__)
 
-finally_response_data = {"code": 500, "msg": "register failed，please try again"}
+
+class CheckLogin(APIView):
+    def get(self, request):
+        user_id = request.session.get("id")
+        token = request.session.get("TokenStr")
+        print("check-login", user_id, token)
+        if user_id and token:
+            return user_id
+        else:
+            redirect("login/")
 
 
 class LoginApiView(APIView):
@@ -25,14 +36,11 @@ class LoginApiView(APIView):
         :param request:
         :return:
         """
+        final_data = BaseResponse()
         username = request.data.get('username')
         password = request.data.get('pwd')
         user_object = User.objects.filter(username=username, pwd=password).first()
-        data_dic = {}
-        data_dic["username"] = username
-        data_dic["pwd"] = password
-        serializer = UserSerializer(data=data_dic, context={"request": request})
-        if serializer.is_valid():
+        if user_object:
             # set login status into session, for the other interface check is login or not
             random_char = random.choice(
                 [chr(random.randint(65, 90)), chr(random.randint(97, 122))])
@@ -41,16 +49,19 @@ class LoginApiView(APIView):
                 provisional_str = str(random.randrange(10, 100)) + random_char
                 start_str += provisional_str
             request.session["id"] = user_object.id
-            # request.set_signed_cookie("id", user_object.id, salt="qaz")
             request.session["TokenStr"] = time.asctime() + start_str
-            global finally_response_data
-            finally_response_data["code"] = 200
-            finally_response_data["msg"] = "you are in"
-            return JsonResponse(serializer.data, status=finally_response_data)
+            # global finally_response_data
+            final_data.code = 200
+            final_data.data = "you are in"
+            final_data.username = username
+            final_data.password = password
+            final_data.token = request.session["TokenStr"]
+            return JsonResponse(final_data.dict)
         else:
-            finally_response_data = {"code": 500,
-                                     "msg": "sorry, login failed, username or password was wrong, please try again"}
-            return JsonResponse(serializer.error, status=finally_response_data)
+            final_data.code = 500
+            final_data.data = "sorry, login failed, username or password was wrong, please try again"
+            logger.error(final_data)
+            return JsonResponse(final_data.dict)
 
 
 class RegisterApiView(APIView):
@@ -60,6 +71,7 @@ class RegisterApiView(APIView):
         :param request:
         :return:
         """
+        final_data = BaseResponse()
         user_data = {}
         user_detail_data = {}
         username = request.data.get("username")
@@ -80,10 +92,10 @@ class RegisterApiView(APIView):
         user_detail_data["salary"] = salary
         # todo checkout these fields
         if pwd != re_pwd:
-            finally_response_data["code"] = 404
-            finally_response_data["msg"] = "two passwords was different, try again"
-            return JsonResponse(finally_response_data)
-        user_ser = UserSerializer(data=user_data)
+            final_data.code = 404
+            final_data.data = "two passwords was different, try again"
+            return JsonResponse(final_data.dict)
+        user_ser = RegisterSerializer(data=user_data)
         user_detail_ser = UserDetailSerializer(data=user_detail_data)
         user_ser_bool = user_ser.is_valid()
         user_detail_ser_bool = user_detail_ser.is_valid()
@@ -94,55 +106,76 @@ class RegisterApiView(APIView):
                     user_object = User.objects.create(username=user_ser.data["username"],
                                                       phone_num=user_ser.data["phone_num"], pwd=user_ser.data["pwd"])
                     logger.debug("user_object", user_object)
-                    user_item = UserDetail.objects.create(user_id_id=user_object.pk,
-                                                          gender=user_detail_ser.data["gender"],
-                                                          age=user_detail_ser.data["age"],
-                                                          job=user_detail_ser.data["job"],
-                                                          salary=user_detail_ser.data["salary"])
+                    UserDetail.objects.create(user_id_id=user_object.pk,
+                                              gender=user_detail_ser.data["gender"],
+                                              age=user_detail_ser.data["age"],
+                                              job=user_detail_ser.data["job"],
+                                              salary=user_detail_ser.data["salary"])
             except Exception as e:
-                finally_response_data["code"] = 500
-                finally_response_data["msg"] = str(e) + "/n database failed, try again"
-                return JsonResponse(finally_response_data)
+                final_data.code = 500
+                final_data.data = str(e) + "/n database failed, try again"
+                return JsonResponse(final_data.dict)
         else:
             logger.error("errors-----msg", user_ser.errors, user_detail_ser.errors, "end--msg")
-            finally_response_data["code"] = 500
-            finally_response_data["msg"] = "is_valid failed, checkout errors"
-            return JsonResponse(finally_response_data)
+            final_data.code = 500
+            final_data.data = "is_valid failed, checkout errors"
+            return JsonResponse(final_data.dict)
+        data_dic = {}
         for item in user_ser.data.items():
-            finally_response_data[item[0]] = item[1]
+            data_dic[item[0]] = item[1]
         for item in user_detail_ser.data.items():
-            if item[0] == "salary":
-                finally_response_data[item[0]] = get_salary(item[1])
-            elif item[0] == "gender":
-                finally_response_data[item[0]] = get_gender(item[1])
+            key_obj = item[0]
+            if key_obj == "salary":
+                data_dic[key_obj] = get_salary(item[1])
+            elif key_obj == "gender":
+                data_dic[key_obj] = get_gender(item[1])
             else:
-                finally_response_data[item[0]] = item[1]
-        finally_response_data["code"] = 200
-        finally_response_data["msg"] = "congratulations"
-        return JsonResponse(finally_response_data)
+                data_dic[key_obj] = item[1]
+        final_data.code = 200
+        final_data.data = data_dic
+        print("final-dict", final_data.dict)
+        return JsonResponse(final_data.dict)
 
 
-class BillApiView(APIView):
+class BillApiView(CheckLogin):
     def post(self, request):
         """
         submit bill tips
         :param request:
         :return:
         """
+        final_data = BaseResponse()
         money = request.data.get("money")
         remarks = request.data.get("remarks")
-        this_moment = float(request.data.get("time"))  # 这里获取的是时间字符串，这样的格式比较符合预期，然后转换成时间对象或许能容易些
-        user_id = CheckLogin.check
-        try:
-            bill_obj = BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
-            bill_serializer = BillDetailSerializer(data=bill_obj, context={"request": request})
-        except Exception as e:
-            finally_response_data["code"] = 500
-            finally_response_data["msg"] = str(e) + "database failed，try again"
-            return JsonResponse(bill_serializer.errors, status=finally_response_data)
-        finally_response_data["code"] = 200
-        finally_response_data["msg"] = "congratulation, you wrote a bill tip"
-        return JsonResponse(bill_serializer.data.dict, status=finally_response_data)
+        this_moment = time.time()
+        user_id = request.session.get("id")
+        data_dic = {}
+        data_dic["money"] = money
+        data_dic["remarks"] = remarks
+        data_dic["time"] = this_moment
+        data_dic["user_id"] = user_id
+        bill_serializer = BillInputSerializer(data=data_dic)
+        logger.info("serializer", bill_serializer)
+        bill_ser_bool = bill_serializer.is_valid()
+        if bill_ser_bool:
+            try:
+                BillDetail.objects.create(time=this_moment, money=money, remarks=remarks, user_id_id=user_id)
+            except Exception as e:
+                final_data.code = 500
+                final_data.data = str(e) + "database failed，try again"
+                logger.error(bill_serializer.errors, final_data.dict)
+                return JsonResponse(final_data.dict)
+        else:
+            logger.error("errors-----msg", bill_serializer.errors, "end--msg")
+            final_data.code = 500
+            final_data.data = "is_valid failed, checkout errors"
+            return JsonResponse(final_data.dict)
+        final_data.code = 200
+        final_data.data = "congratulation, you wrote a bill tip"
+        final_data.time = get_end_back_time(bill_serializer.data["time"])
+        final_data.money = bill_serializer.data["money"]
+        final_data.remarks = bill_serializer.data["remarks"]
+        return JsonResponse(final_data.dict, status=200)
 
     def get(self, request):
         """
@@ -150,7 +183,8 @@ class BillApiView(APIView):
         :param request:
         :return:
         """
-        user_id = CheckLogin.check
+        final_data = BaseResponse()
+        user_id = request.session.get("id")
         start_obj = request.data.get("start_time")
         end_obj = request.data.get("end_time")
         start_time = get_time_format(start_obj)
@@ -158,31 +192,40 @@ class BillApiView(APIView):
         # get data what we want from database
         try:
             sum_query_set = BillDetail.objects.filter(user_id_id=user_id,
-                                                      time__range=(start_time, end_time)).values_list("time", "money",
-                                                                                                      "remarks").all()
-            bill_detail_serializer = BillDetailSerializer(data=sum_query_set, context={"request": request})
+                                                      time__range=(start_time, end_time)).values("time", "money",
+                                                                                                 "remarks",
+                                                                                                 "user_id_id",
+                                                                                                 "user_id__username"
+                                                                                                 ).all()
+            bill_ser = BillDetailSerializer(sum_query_set, many=True)
+            final_data.data = bill_ser.data
+            logger.info("bill-ser-data>>>>>", bill_ser.data)
         except Exception as e:
             logger.error(str(e))
-            finally_response_data["code"] = 300
-            finally_response_data["msg"] = str(e) + "database failed, try again"
-            return JsonResponse(bill_detail_serializer.errors, status=finally_response_data)
+            final_data.code = 300
+            final_data.data = str(e) + "\n++database failed, try again"
+            return JsonResponse(final_data.dict)
         finally_data_format = []
+        out_dic = {}
         start_num = 0
+        out_dic["full_data"] = []
         for query_object in sum_query_set:
             sum_money_dict = {}
-            sum_money_dict["time"] = get_str_time(query_object[0])
-            sum_money_dict["money"] = query_object[1]
-            start_num += query_object[1]
+            logger.info("query-object", query_object)
+            sum_money_dict["username"] = query_object["user_id__username"]
+            sum_money_dict["time"] = get_end_back_time(query_object["time"])
+            sum_money_dict["money"] = query_object["money"]
+            sum_money_dict["remarks"] = query_object["remarks"]
+            start_num += query_object["money"]
             finally_data_format.append(sum_money_dict)
-            #  integrate data format
-            finally_response_data["code"] = 201
-            finally_response_data["msg"] = "you got what you want"
-            finally_response_data["data_detail"] = finally_data_format
-            finally_response_data["total_money"] = start_num
-            return JsonResponse(finally_response_data)
-        finally_response_data["code"] = 200
-        finally_response_data["msg"] = "congratulations"
-        return JsonResponse(bill_detail_serializer.data, status=finally_response_data)
+            out_dic["full_data"].append(sum_money_dict)
+            out_dic["user_id"] = query_object["user_id_id"]
+        # integrate data format
+        final_data.code = 201
+        final_data.msg = "you got what you want"
+        final_data.data = out_dic
+        final_data.total_money = start_num
+        return JsonResponse(final_data.dict)
 
     # def get_detail(self, request):
     #     """
@@ -224,18 +267,26 @@ class BillApiView(APIView):
     #     return HttpResponse(data)
 
 
-def logout(request):
-    """
-    there is a bug, when you logout, you still could get all data, that couldn't happen any more
-    :param request:
-    :return:
-    """
-    user_id = CheckLogin.check
-    if user_id:
+class LogoutApiView(APIView):
+    def delete(self, request):
+        """
+        there is a bug, when you logout, you still could get all data, that couldn't happen any more
+        :param request:
+        :return:
+        """
+        final_obj = BaseResponse()
         request.session.delete("id")
         request.session.delete("TokenStr")
-        finally_response_data['code'] = 666
-        finally_response_data['msg'] = "you are out"
-        return JsonResponse(finally_response_data)
-    else:
-        return JsonResponse(finally_response_data)
+        id = request.session.get("id")
+        print("logout-id", id)
+        # user_id = Logout.delete(request)
+        # print("user-id", user_id)
+        # if user_id:
+        final_obj.code = 666
+        final_obj.data = "you are out"
+        logger.info(final_obj.dict)
+        return JsonResponse(final_obj.dict)
+        # else:
+        #     final_obj.code = 301
+        #     final_obj.data = "turn into login"
+        #     return JsonResponse(final_obj.dict)
