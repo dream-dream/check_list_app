@@ -1,5 +1,6 @@
 import re
 import json
+import redis
 import time
 import random
 import logging
@@ -16,14 +17,17 @@ from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, Re
 
 # Create your views here.
 logger = logging.getLogger(__name__)
+# put login user id in redis
+redis_con = redis.ConnectionPool(host="127.0.0.1", port=6379)
+redis_obj = redis.Redis(connection_pool=redis_con)
 
 
 class CheckLogin(APIView):
     def get(self, request):
-        user_id = request.session.get("id")
-        token = request.session.get("TokenStr")
-        print("check-login", user_id, token)
-        if user_id and token:
+        user_id = redis_obj.get("id")
+        token_str = redis_obj.get("TokenStr")
+        logger.info("redis-check-login", user_id, token_str)
+        if user_id and token_str:
             return user_id
         else:
             redirect("login/")
@@ -48,9 +52,8 @@ class LoginApiView(APIView):
             for i in range(5):
                 provisional_str = str(random.randrange(10, 100)) + random_char
                 start_str += provisional_str
-            request.session["id"] = user_object.id
-            request.session["TokenStr"] = time.asctime() + start_str
-            # global finally_response_data
+            redis_obj.set("id", user_object.id)
+            redis_obj.set("TokenStr", time.asctime() + start_str)
             final_data.code = 200
             final_data.data = "you are in"
             final_data.username = username
@@ -148,7 +151,7 @@ class BillApiView(CheckLogin):
         money = request.data.get("money")
         remarks = request.data.get("remarks")
         this_moment = time.time()
-        user_id = request.session.get("id")
+        user_id = redis_obj.get("id")
         data_dic = {}
         data_dic["money"] = money
         data_dic["remarks"] = remarks
@@ -184,7 +187,7 @@ class BillApiView(CheckLogin):
         :return:
         """
         final_data = BaseResponse()
-        user_id = request.session.get("id")
+        user_id = redis_obj.get("id")
         start_obj = request.data.get("start_time")
         end_obj = request.data.get("end_time")
         start_time = get_time_format(start_obj)
@@ -227,45 +230,6 @@ class BillApiView(CheckLogin):
         final_data.total_money = start_num
         return JsonResponse(final_data.dict)
 
-    # def get_detail(self, request):
-    #     """
-    #     get detail of bill tips
-    #     :param request:
-    #     :return:
-    #     """
-    #
-    #     user_id = request.session.get("id")
-    #     start_time = request.POST.get("start_time")
-    #     start_time = get_time_format(start_time)
-    #     end_time = request.POST.get("end_time")
-    #     end_time = get_time_format(end_time)
-    #     try:
-    #         detail_query_set = BillDetail.objects.filter(user_id_id=user_id,
-    #                                                      time__range=(start_time, end_time)).values_list("time",
-    #                                                                                                      "remarks",
-    #                                                                                                      "money").all()
-    #     except Exception as e:
-    #         logger.error(str(e))
-    #         finally_response_data["code"] = 300
-    #         finally_response_data["msg"] = str(e) + "database failed, try again"
-    #         data = json.dumps(finally_response_data)
-    #         return HttpResponse(data)
-    #     detail_query_li = []
-    #     begin_num = 0
-    #     for query_object in detail_query_set:
-    #         dic_inner_query = {}
-    #         dic_inner_query["time"] = get_str_time(query_object[0])
-    #         dic_inner_query["remarks"] = query_object[1]
-    #         dic_inner_query["money"] = query_object[2]
-    #         begin_num += query_object[2]
-    #         detail_query_li.append(dic_inner_query)
-    #     finally_response_data["code"] = 201
-    #     finally_response_data["msg"] = "you got what you want"
-    #     finally_response_data["data_detail"] = detail_query_li
-    #     finally_response_data["total"] = begin_num
-    #     data = json.dumps(finally_response_data)
-    #     return HttpResponse(data)
-
 
 class LogoutApiView(APIView):
     def delete(self, request):
@@ -277,16 +241,11 @@ class LogoutApiView(APIView):
         final_obj = BaseResponse()
         request.session.delete("id")
         request.session.delete("TokenStr")
-        id = request.session.get("id")
-        print("logout-id", id)
-        # user_id = Logout.delete(request)
-        # print("user-id", user_id)
-        # if user_id:
+        redis_obj.delete("id")
+        redis_obj.delete("TokenStr")
+        id = redis_obj.get("id")
+        logger.info("id from redis>>>", id)
         final_obj.code = 666
         final_obj.data = "you are out"
         logger.info(final_obj.dict)
         return JsonResponse(final_obj.dict)
-        # else:
-        #     final_obj.code = 301
-        #     final_obj.data = "turn into login"
-        #     return JsonResponse(final_obj.dict)
