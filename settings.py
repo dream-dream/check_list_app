@@ -16,6 +16,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
+    LOG_LEVEL = 'DEBUG'
     DEBUG = True
     REDIS_CON = redis.ConnectionPool(host="localhost", port=6379)
     REDIS_OBJ = redis.Redis(connection_pool=REDIS_CON)

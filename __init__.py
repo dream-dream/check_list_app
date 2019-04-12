@@ -1,12 +1,14 @@
 import os, sys
+import logging
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from flask import Flask
 from mongoengine import *
 from flask_mongoengine import MongoEngine
-from flask_script import Manager, Server
 
+from flask_check_list.loggins import LoggingSet
 db = MongoEngine()
+logger = LoggingSet()
 
 
 def create_app():
@@ -18,6 +20,8 @@ def create_app():
         'host': 'localhost',
         'port': 27017
     }
+    logger.debug_log(logging.DEBUG)
+    logger.error_log(logging.ERROR)
     db.init_app(app)
     app.debug = True
     return app

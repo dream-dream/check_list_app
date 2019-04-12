@@ -18,6 +18,7 @@ from flask_check_list.views.utils import get_str_time, get_time_format, \
 redis_con = redis.ConnectionPool(host="127.0.0.1", port=6379)
 redis_obj = redis.Redis(connection_pool=redis_con)
 api = Blueprint('api', __name__)
+logger = logging.getLogger(__name__)
 
 
 class Login(MethodView):
@@ -36,10 +37,9 @@ class Login(MethodView):
             final_data.code = 400
             final_data.data = str(e) + "/n input args was wrong, try again"
             return jsonify(final_data.dict)
-        user_object = User.objects.get(username=username, pwd=password)
+        user_object = User.objects(username=username, pwd=password)
         if user_object:
-            # set login status into session,
-            # for the other interface check is login or not
+            # set login status into mongodb
             random_char = random.choice(
                 [chr(random.randint(65, 90)), chr(random.randint(97, 122))])
             start_str = ""
@@ -65,7 +65,7 @@ class Login(MethodView):
             final_data.code = 500
             final_data.data = "sorry, login failed, username or password " \
                               "was wrong, please try again"
-            # logger.error(final_data)
+            logger.error(final_data.dict)
             return jsonify(final_data.dict)
 
 
@@ -141,12 +141,11 @@ class Register(MethodView):
             final_data.code = 400
             final_data.data = "two passwords was different, try again"
             return jsonify(final_data.dict)
-            # logger.info(user_ser.data, user_detail_ser.data)
         try:
             # to do rollback
             user_object = User(username=username,
                                phone_num=phone_num, pwd=pwd)
-            # logger.debug("user_object", user_object)
+            logger.debug("user_object", user_object)
             user_object.save()
             user_detail = UserDetail(user_id=user_object.id,
                                      gender=gender,
@@ -187,7 +186,7 @@ class Bill(CheckLogin):
             return jsonify(final_data.dict)
         this_moment = time.time()
         user_id = super(Bill, self).get()
-        # logger.info("serializer", bill_serializer)
+        logger.info("bill:post>>request-json", request_json)
         try:
             bill_obj = BillDetail(time=this_moment, money=money,
                                   remarks=remarks,
@@ -196,7 +195,7 @@ class Bill(CheckLogin):
         except Exception as e:
             final_data.code = 300
             final_data.data = str(e) + "database failed，try again"
-            # logger.error(bill_serializer.errors, final_data.dict)
+            logger.error(final_data.dict)
             return jsonify(final_data.dict)
         final_data.code = 200
         final_data.data = "congratulation, you wrote a bill tip"
@@ -229,19 +228,17 @@ class Bill(CheckLogin):
             sum_query_set = BillDetail.objects(
                 Q(time__lte=end_time) & Q(time__gte=start_time) & Q(
                     user=user_id)).all()
-            # logger.info("bill-ser-data>>>>>", bill_ser.data)
+            logger.info("bill:get>>>>>", sum_query_set)
         except Exception as e:
-            # logger.error(str(e))
             final_data.code = 300
             final_data.data = str(e) + "\n++database failed, try again"
+            logger.error(final_data.dict)
             return jsonify(final_data.dict)
         start_num = 0
         final_data.data = []
         for query_object in sum_query_set:
-            print("query-object", query_object.user, query_object.time,
-                  query_object.money, query_object.remarks)
             sum_money_dict = {}
-            # logger.info("query-object", query_object)
+            logger.info("bill:get>>>query-object", query_object)
             sum_money_dict["time"] = get_str_time((query_object.time))
             sum_money_dict["money"] = query_object.money
             sum_money_dict["remarks"] = query_object.remarks
@@ -282,7 +279,6 @@ class BillList(MethodView):
 class Logout(CheckLogin):
     def delete(self):
         """
-        there is a bug, when you logout, you still could get all data, that couldn't happen any more
         :param request:
         :return:
         """
@@ -294,11 +290,12 @@ class Logout(CheckLogin):
         except Exception as e:
             final_obj.code = 300
             final_obj.error = str(e) + "\n++database failed, try again"
+            logger.error(final_obj.dict)
             return jsonify(final_obj.dict)
-        # logger.info("id from redis>>>", id)
+        logger.info("login status from mongodb>>>", token_obj)
         final_obj.code = 666
         final_obj.data = "you are out"
-        # logger.info(final_obj.dict)
+        logger.info(final_obj.dict)
         return jsonify(final_obj.dict)
 
 

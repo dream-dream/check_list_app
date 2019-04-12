@@ -1,23 +1,28 @@
 import time
-from flask import jsonify
+import logging
 from flask.views import MethodView
-from django.shortcuts import HttpResponse
 
 from .models import User, Token
+logger = logging.getLogger(__name__)
 
 
 class CheckLogin(MethodView):
+    # for the other interface check is login or not
     def get(self):
         user_id = Token.objects().first()
-        # logger.info("redis-check-login", user_id, token_str)
-        if user_id is None:
-            data = BaseResponse()
-            data.error = 'redirect login'
-            data.code = 400
-            raise ValueError("redirect login")
-            # return redirect("/api/v1/login")
-        else:
-            return user_id.token
+        logger.info("redis-check-login", user_id)
+        try:
+            if user_id is None:
+                data = BaseResponse()
+                data.error = 'redirect login'
+                data.code = 400
+                raise ValueError("redirect login")
+                # return redirect("/api/v1/login")
+            else:
+                return user_id.token
+        except Exception as e:
+            logger.error('utils:checklogin', e)
+            raise ValueError("checklogin was wrong")
 
 
 class BaseResponse():
@@ -33,16 +38,24 @@ class BaseResponse():
 
 def get_gender(arg):
     li_gender = ["female", "male"]
-    for index, item_gender in enumerate(li_gender):
-        if arg == index:
-            return item_gender
+    try:
+        for index, item_gender in enumerate(li_gender):
+            if arg == index:
+                return item_gender
+    except Exception as e:
+        logger.error('utils:get-gender', e)
+        raise ValueError(str(e))
 
 
 def get_salary(arg):
     li_salary = ["<2000", '2000-5000', '5000-8000', '8000-10000', '10000<']
-    for index, item_salary in enumerate(li_salary):
-        if arg == index:
-            return item_salary
+    try:
+        for index, item_salary in enumerate(li_salary):
+            if arg == index:
+                return item_salary
+    except Exception as e:
+        logger.error("utils:get-salary", e)
+        raise ValueError(str(e))
 
 
 def get_time_format(arg):
@@ -53,11 +66,13 @@ def get_time_format(arg):
     """
     try:
         format_time_str = time.strptime(arg, "%Y-%m-%d %H:%M:%S")
-    except ValueError:
+    except ValueError as e:
+        logger.error('utils:get-time-format', e)
         try:
             struct_time = time.strptime(arg, "%Y-%m-%d")
             return time.mktime(struct_time)
         except Exception as e:
+            logger.error("utils:get-time-format", e)
             return ""
     return time.mktime(format_time_str)
 
@@ -71,7 +86,8 @@ def get_str_time(arg):
     try:
         struct_time = time.localtime(arg)
     except Exception as e:
-        return HttpResponse(str(e))
+        logger.error('utils:get-str-time', e)
+        raise ValueError(str(e))
     return time.strftime("%Y-%m-%d %H:%M:%S", struct_time)
 
 
@@ -81,5 +97,9 @@ def get_username(arg):
     :param arg: User object id
     :return: username from User
     """
-    user_obj = User.objects(id=arg).only('username').exclude('id')
+    try:
+        user_obj = User.objects(id=arg).only('username').exclude('id')
+    except Exception as e:
+        logger.error('utils:get-username', e)
+        raise ValueError(e)
     return user_obj[0]['username']
