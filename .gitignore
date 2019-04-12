@@ -3,6 +3,6 @@ bin/
 *.sqlite3
 *.settings/
 *.log
-*.log.*
+*.log*
 *.xml
 migrations/
