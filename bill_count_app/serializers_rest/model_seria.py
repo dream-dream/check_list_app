@@ -72,13 +72,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BillDetailSerializer(serializers.ModelSerializer):
-
     # username = serializers.RelatedField(many=True, read_only=True)
     # user_id = serializers.RelatedField(many=True, read_only=True)
     # username = serializers.RegisterSerializer(
     #     many=True,
     #     read_only=True,
-        # view_name='user_id_id',
+    # view_name='user_id_id',
     # )  # foreignkey field use argument--->source
     # user = RegisterSerializer()
     user = serializers.CharField(source="user_id__username")

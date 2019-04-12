@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 from rest_framework.views import APIView
 
 from bill_count_app.models import User, UserDetail, BillDetail
-from bill_count_app.form import get_time_format, get_gender, get_salary, get_end_back_time, \
+from bill_count_app.form import get_time_format, get_end_back_time, \
     BaseResponse
 from bill_count_app.serializers_rest.model_seria import UserDetailSerializer, RegisterSerializer, BillInputSerializer, \
     BillDetailSerializer
@@ -52,7 +52,7 @@ class LoginApiView(APIView):
             for i in range(5):
                 provisional_str = str(random.randrange(10, 100)) + random_char
                 start_str += provisional_str
-            redis_obj.set("id", user_object.id)
+            redis_obj.set("user_id", user_object.id)
             redis_obj.set("TokenStr", time.asctime() + start_str)
             final_data.code = 200
             final_data.data = "you are in"
@@ -129,14 +129,14 @@ class RegisterApiView(APIView):
         for item in user_detail_ser.data.items():
             key_obj = item[0]
             if key_obj == "salary":
-                data_dic[key_obj] = get_salary(item[1])
+                data_dic[key_obj] = item[1]
             elif key_obj == "gender":
-                data_dic[key_obj] = get_gender(item[1])
+                data_dic[key_obj] = item[1]
             else:
                 data_dic[key_obj] = item[1]
         final_data.code = 200
         final_data.data = data_dic
-        print("final-dict", final_data.dict)
+        logger.info("final-dict", final_data.dict, type(dict))
         return JsonResponse(final_data.dict)
 
 
@@ -151,7 +151,7 @@ class BillApiView(CheckLogin):
         money = request.data.get("money")
         remarks = request.data.get("remarks")
         this_moment = time.time()
-        user_id = redis_obj.get("id")
+        user_id = redis_obj.get("user_id")
         data_dic = {}
         data_dic["money"] = money
         data_dic["remarks"] = remarks
@@ -187,7 +187,7 @@ class BillApiView(CheckLogin):
         :return:
         """
         final_data = BaseResponse()
-        user_id = redis_obj.get("id")
+        user_id = redis_obj.get("user_id")
         start_obj = request.data.get("start_time")
         end_obj = request.data.get("end_time")
         start_time = get_time_format(start_obj)
@@ -239,11 +239,9 @@ class LogoutApiView(APIView):
         :return:
         """
         final_obj = BaseResponse()
-        request.session.delete("id")
-        request.session.delete("TokenStr")
-        redis_obj.delete("id")
+        redis_obj.delete("user_id")
         redis_obj.delete("TokenStr")
-        id = redis_obj.get("id")
+        id = redis_obj.get("user_id")
         logger.info("id from redis>>>", id)
         final_obj.code = 666
         final_obj.data = "you are out"

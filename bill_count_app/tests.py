@@ -30,9 +30,4 @@ for item in dic_obj.items():
     dic_item[key] = item[1]
     ret.data = dic_item
 # print(ret.dict)
-import redis
-re_obj = redis.Redis(host="localhost", port=6379, decode_responses=True)
-re_obj.set("id", "wusir")
-re_obj.set("job", "teacher")
-re_obj.set("gender", "male")
-print(re_obj.get("gender"))
+
