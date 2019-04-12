@@ -18,7 +18,7 @@ class LoggingSet():
     def debug_log(self, log_level):
         logging.basicConfig(level=log_level)
         file_log_handler = RotatingFileHandler(
-            os.path.join(self.path, "flask_log"),
+            os.path.join(self.path, "flask.log"),
             # maxBytes=1024 * 1024 * 100,
             maxBytes=self.maxBytes,
             backupCount=10
@@ -29,7 +29,7 @@ class LoggingSet():
     def error_log(self, log_level):
         logging.basicConfig(level=log_level)
         file_error_handler = RotatingFileHandler(
-            os.path.join(self.path, 'error_log'),
+            os.path.join(self.path, 'error.log'),
             maxBytes=self.maxBytes,
             backupCount=5
         )
