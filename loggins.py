@@ -37,4 +37,3 @@ class LoggingSet():
         logging.getLogger().addHandler(file_error_handler)
 
 
-loger = LoggingSet
