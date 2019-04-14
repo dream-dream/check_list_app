@@ -6,7 +6,7 @@ from flask import Flask
 from mongoengine import *
 from flask_mongoengine import MongoEngine
 
-from flask_check_list.loggins import LoggingSet
+from .loggins import LoggingSet
 db = MongoEngine()
 logger = LoggingSet()
 
@@ -31,7 +31,7 @@ app = create_app()
 
 
 def register_blueprints(app):
-    from flask_check_list.views.view import api
+    from .views.view import api
     app.register_blueprint(api, url_prefix='/api/v1')
 
 
