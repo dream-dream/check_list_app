@@ -7,10 +7,10 @@ from flask.views import MethodView
 from flask import redirect, jsonify, request, Blueprint
 from mongoengine.queryset.visitor import Q
 
-from flask_check_list.views.models import User, UserDetail, BillDetail, \
+from ..views.models import User, UserDetail, BillDetail, \
     Token
-from flask_check_list.response_code import BaseResponse
-from flask_check_list.views.utils import get_str_time, get_time_format, \
+from ..response_code import BaseResponse
+from ..views.utils import get_str_time, get_time_format, \
     get_username, CheckLogin, get_gender, get_salary
 
 # Create your views here.

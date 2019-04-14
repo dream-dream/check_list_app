@@ -6,7 +6,7 @@ from flask import Flask
 from mongoengine import *
 from flask_mongoengine import MongoEngine
 
-from flask_check_list.loggins import LoggingSet
+from .loggins import LoggingSet
 db = MongoEngine()
 logger = LoggingSet()
 

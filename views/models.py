@@ -1,7 +1,7 @@
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from mongoengine import *
-from flask_check_list import db
+from .. import db
 from mongoengine import ObjectIdField
 # Create your models here.
 
