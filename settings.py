@@ -1,7 +1,6 @@
 import redis
 import pymysql
 from datetime import timedelta
-from DBUtils.PooledDB import PooledDB, SharedDBConnection
 import mongoengine
 
 
