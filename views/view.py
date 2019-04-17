@@ -36,8 +36,9 @@ class Login(MethodView):
         except Exception as e:
             final_data.code = 400
             final_data.data = str(e) + "/n input args was wrong, try again"
+            logger.error("login", final_data.dict)
             return jsonify(final_data.dict)
-        user_object = User.objects(username=username, pwd=password)
+        user_object = User.objects.get(username=username, pwd=password)
         if user_object:
             # set login status into mongodb
             random_char = random.choice(
@@ -54,6 +55,7 @@ class Login(MethodView):
             except Exception as e:
                 final_data.code = 300
                 final_data.data = str(e) + "database failed，try again"
+                logger.error("login", final_data.dict)
                 return jsonify(final_data.dict)
             final_data.code = 200
             final_data.data = "you are in"
@@ -90,6 +92,7 @@ class Register(MethodView):
         except Exception as e:
             final_data.code = 400
             final_data.data = str(e) + "/n input args was wrong, try again"
+            logger.error("register", final_data.dict)
             return jsonify(final_data.dict)
         # todo checkout these fields
         if username is "" or phone_num is "" or pwd is "":
@@ -156,6 +159,7 @@ class Register(MethodView):
         except Exception as e:
             final_data.code = 300
             final_data.data = str(e) + "/n database failed, try again"
+            logger.error("register", final_data.dict)
             return jsonify(final_data.dict)
         final_data.code = 200
         final_data.data = 'congratulations register successful'
@@ -183,6 +187,7 @@ class Bill(CheckLogin):
         except Exception as e:
             final_data.code = 400
             final_data.data = str(e) + "/n input args was wrong, try again"
+            logger.error("bill-post", final_data.dict)
             return jsonify(final_data.dict)
         this_moment = time.time()
         user_id = super(Bill, self).get()
@@ -220,6 +225,7 @@ class Bill(CheckLogin):
         except Exception as e:
             final_data.code = 400
             final_data.data = str(e) + "/n input args was wrong, try again"
+            logger.error("bill-get", final_data.dict)
             return jsonify(final_data.dict)
         start_time = get_time_format(start_obj)
         end_time = get_time_format(end_obj)
@@ -232,7 +238,7 @@ class Bill(CheckLogin):
         except Exception as e:
             final_data.code = 300
             final_data.data = str(e) + "\n++database failed, try again"
-            logger.error(final_data.dict)
+            logger.error("bill-get", final_data.dict)
             return jsonify(final_data.dict)
         start_num = 0
         final_data.data = []
@@ -261,6 +267,7 @@ class BillList(MethodView):
         except Exception as e:
             finally_data.code = 300
             finally_data.error = str(e) + "\n++database failed, try again"
+            logger.error("bill-list", finally_data.dict)
             return jsonify(finally_data.dict)
         finally_data.data = []
         for query in bill_obj:
@@ -290,7 +297,7 @@ class Logout(CheckLogin):
         except Exception as e:
             final_obj.code = 300
             final_obj.error = str(e) + "\n++database failed, try again"
-            logger.error(final_obj.dict)
+            logger.error("logout", final_obj.dict)
             return jsonify(final_obj.dict)
         logger.info("login status from mongodb>>>", token_obj)
         final_obj.code = 666

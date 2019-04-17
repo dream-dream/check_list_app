@@ -1,6 +1,4 @@
 import redis
-import pymysql
-from datetime import timedelta
 import mongoengine
 
 
