@@ -38,35 +38,44 @@ class Login(MethodView):
             final_data.data = str(e) + "/n input args was wrong, try again"
             logger.error("login", final_data.dict)
             return jsonify(final_data.dict)
-        user_object = User.objects.get(username=username, pwd=password)
-        if user_object:
-            # set login status into mongodb
-            random_char = random.choice(
-                [chr(random.randint(65, 90)), chr(random.randint(97, 122))])
-            start_str = ""
-            for i in range(5):
-                provisional_str = str(random.randrange(10, 100)) + random_char
-                start_str += provisional_str
-            user_id = str(user_object.id)
-            token = time.asctime() + start_str
-            try:
-                user_token = Token(token=user_id)
-                user_token.save()
-            except Exception as e:
-                final_data.code = 300
-                final_data.data = str(e) + "database failed，try again"
-                logger.error("login", final_data.dict)
+        try:
+            user_object = User.objects.get(username=username, pwd=password)
+            if user_object:
+                # set login status into mongodb
+                random_char = random.choice(
+                    [chr(random.randint(65, 90)),
+                     chr(random.randint(97, 122))])
+                start_str = ""
+                for i in range(5):
+                    provisional_str = str(
+                        random.randrange(10, 100)) + random_char
+                    start_str += provisional_str
+                user_id = str(user_object.id)
+                token = time.asctime() + start_str
+                try:
+                    user_token = Token(token=user_id)
+                    user_token.save()
+                except Exception as e:
+                    final_data.code = 300
+                    final_data.data = str(e) + "database failed，try again"
+                    logger.error("login", final_data.dict)
+                    return jsonify(final_data.dict)
+                final_data.code = 200
+                final_data.data = "you are in"
+                final_data.username = username
+                final_data.password = password
+                final_data.token = token
                 return jsonify(final_data.dict)
-            final_data.code = 200
-            final_data.data = "you are in"
-            final_data.username = username
-            final_data.password = password
-            final_data.token = token
-            return jsonify(final_data.dict)
-        else:
-            final_data.code = 500
-            final_data.data = "sorry, login failed, username or password " \
-                              "was wrong, please try again"
+            else:
+                final_data.code = 300
+                final_data.data = "sorry, login failed, username or password " \
+                                  "was wrong, please try again"
+                logger.error(final_data.dict)
+                return jsonify(final_data.dict)
+        except Exception as e:
+            final_data.code = 300
+            final_data.data = str(
+                e) + "sorry, login failed, please try again"
             logger.error(final_data.dict)
             return jsonify(final_data.dict)
 
