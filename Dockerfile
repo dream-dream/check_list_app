@@ -1,15 +1,15 @@
 # Use an official Python runtime as a parent image
-FROM python:3.6-slim
+FROM python:3.6
 
 # Set the working directory to /app
-WORKDIR /app/check_list_app
+WORKDIR /app/
 
 # Copy the current directory contents into the container at /app
-COPY . /app/check_list_app
+COPY . /app/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
-
+RUN pip install gunicorn
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
@@ -17,4 +17,6 @@ EXPOSE 80
 ENV NAME World
 
 # Run app.py when the container launches
+# CMD ["gunicorn", "-c", "/app/check_list_app/gunicorn.conf.py", "manage:app"]
 CMD ["python", "manage.py"]
+# ENTRYPOINT ["gunicorn", "-c", "/app/check_list_app/gunicorn.conf.py", "manage:app"]

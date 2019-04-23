@@ -50,8 +50,20 @@ class Login(MethodView):
                     provisional_str = str(
                         random.randrange(10, 100)) + random_char
                     start_str += provisional_str
-                user_id = str(user_object.id)
+                user_id = user_object.id
                 token = time.asctime() + start_str
+                try:
+                    token_obj = Token.objects(token=user_id).first()
+                except Exception as e:
+                    final_data.code = 300
+                    final_data.data = str(e) + "database failed，try again"
+                    logger.error("login", final_data.dict)
+                    return jsonify(final_data.dict)
+                if token_obj:
+                    final_data.code = 300
+                    final_data.data = "you are already login, " \
+                                      "limited by interface idempotency"
+                    return jsonify(final_data.dict)
                 try:
                     user_token = Token(token=user_id)
                     user_token.save()
@@ -199,6 +211,20 @@ class Bill(CheckLogin):
             logger.error("bill-post", final_data.dict)
             return jsonify(final_data.dict)
         this_moment = time.time()
+        # todo interface Idempotency
+        try:
+            idempot_obj = BillDetail.objects(money=money,
+                                             remarks=remarks).all()
+        except Exception as e:
+            final_data.code = 300
+            final_data.data = str(e) + "database failed，try again"
+            logger.error(final_data.dict)
+            return jsonify(final_data.dict)
+        for item in idempot_obj:
+            if this_moment - item.time <= 3600:
+                final_data.code = 300
+                final_data.data = "limited by interface idempotency"
+                return jsonify(final_data.dict)
         user_id = super(Bill, self).get()
         logger.info("bill:post>>request-json", request_json)
         try:
@@ -282,7 +308,7 @@ class BillList(MethodView):
         for query in bill_obj:
             fina_dic = {}
             fina_dic['user'] = get_username(query.user)
-            fina_dic['time'] = query.time
+            fina_dic['time'] = get_str_time(query.time)
             fina_dic['remarks'] = query.remarks
             fina_dic['money'] = query.money
             finally_data.data.append(fina_dic)

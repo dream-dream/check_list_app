@@ -13,7 +13,6 @@ logger = LoggingSet()
 
 def create_app():
     app = Flask(__name__)
-    # connect('test', host='localhost', port=27017)
     app.config.from_object("settings.DevelopmentConfig")
     app.config['MONGODB_SETTINGS'] = {
         'db': 'test',

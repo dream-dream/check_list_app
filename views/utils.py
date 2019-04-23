@@ -103,3 +103,4 @@ def get_username(arg):
         logger.error('utils:get-username', e)
         raise ValueError(e)
     return user_obj[0]['username']
+
