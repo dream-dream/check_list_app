@@ -17,7 +17,10 @@ def create_app():
     app.config['MONGODB_SETTINGS'] = {
         'db': 'test',
         'host': 'localhost',
-        'port': 27017
+        'port': 27017,
+	'username': 'admin',
+	'password': 'password',
+	'authentication_source': 'admin'
     }
     logger.debug_log(logging.DEBUG)
     logger.error_log(logging.ERROR)
