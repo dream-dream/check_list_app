@@ -72,7 +72,8 @@ class Token(db.Document):
         'collection': 'token',
         'strict': False,
     }
-    token = db.ObjectIdField()
+    user_id = db.ObjectIdField()
+    random_str = db.StringField(required=True, max_length=100)
 
 
 

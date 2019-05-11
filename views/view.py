@@ -11,7 +11,7 @@ from ..views.models import User, UserDetail, BillDetail, \
     Token
 from ..response_code import BaseResponse
 from ..views.utils import get_str_time, get_time_format, \
-    get_username, CheckLogin, get_gender, get_salary
+    get_username, CheckLogin, get_gender, get_salary, RandomStrToken
 
 # Create your views here.
 # put login user id in redis
@@ -42,30 +42,21 @@ class Login(MethodView):
             user_object = User.objects.get(username=username, pwd=password)
             if user_object:
                 # set login status into mongodb
-                random_char = random.choice(
-                    [chr(random.randint(65, 90)),
-                     chr(random.randint(97, 122))])
-                start_str = ""
-                for i in range(5):
-                    provisional_str = str(
-                        random.randrange(10, 100)) + random_char
-                    start_str += provisional_str
+
                 user_id = user_object.id
-                token = time.asctime() + start_str
+                str_random_token = RandomStrToken()
                 try:
-                    token_obj = Token.objects(token=user_id).first()
+                    token_obj = Token.objects(random_str=str_random_token).first()
                 except Exception as e:
                     final_data.code = 300
                     final_data.data = str(e) + "database failed，try again"
                     logger.error("login", final_data.dict)
                     return jsonify(final_data.dict)
                 if token_obj:
-                    final_data.code = 300
-                    final_data.data = "you are already login, " \
-                                      "limited by interface idempotency"
-                    return jsonify(final_data.dict)
+                    str_random_token = RandomStrToken()
                 try:
-                    user_token = Token(token=user_id)
+                    user_token = Token(user_id=user_id,
+                                       random_str=str_random_token)
                     user_token.save()
                 except Exception as e:
                     final_data.code = 300
@@ -76,7 +67,7 @@ class Login(MethodView):
                 final_data.data = "you are in"
                 final_data.username = username
                 final_data.password = password
-                final_data.token = token
+                final_data.forend_token_str = str_random_token
                 return jsonify(final_data.dict)
             else:
                 final_data.code = 300
@@ -100,6 +91,8 @@ class Register(MethodView):
         :return:
         """
         request_json = request.json
+        print(">>>", request_json, type(request_json))
+        logger.debug("register for forend interface", request_json)
         final_data = BaseResponse()
         try:
             username = request_json["username"]
@@ -151,7 +144,7 @@ class Register(MethodView):
         # todo checkout the power of pwd, got digit & character & symbol
         if pwd != re_pwd:
             final_data.code = 400
-            final_data.data = "two passwords inconsistent，try again"
+            final_data.data = "two passwords were inconsistent，try again"
             return jsonify(final_data.dict)
         pwd_li = re.findall('^[a-zA-Z]\w{5,14}$', pwd)
         pwd = pwd_li[0]
@@ -160,10 +153,6 @@ class Register(MethodView):
             final_data.data = \
                 "the format was wrong，start with a letter，cantainer，at " \
                 "least 6 bits,at most 15 bits"
-            return jsonify(final_data.dict)
-        if pwd != re_pwd:
-            final_data.code = 400
-            final_data.data = "two passwords was different, try again"
             return jsonify(final_data.dict)
         try:
             # to do rollback

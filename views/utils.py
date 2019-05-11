@@ -1,6 +1,9 @@
 import time
+import random
 import logging
+from flask import request
 from flask.views import MethodView
+
 
 from .models import User, Token
 logger = logging.getLogger(__name__)
@@ -9,17 +12,24 @@ logger = logging.getLogger(__name__)
 class CheckLogin(MethodView):
     # for the other interface check is login or not
     def get(self):
-        user_id = Token.objects().first()
-        logger.info("redis-check-login", user_id)
+        user_token = request.json
+        logger.debug("checklogin>>>", user_token)
         try:
-            if user_id is None:
+            str_token = user_token["forend_token_str"]
+        except Exception as e:
+            logger.error(e)
+            raise TypeError("forend could not deliver the token_str")
+        token_user_obj = Token.objects(random_str=str_token).first()
+        logger.info("check-login", token_user_obj)
+        try:
+            if token_user_obj is None:
                 data = BaseResponse()
                 data.error = 'redirect login'
                 data.code = 400
                 raise ValueError("redirect login")
                 # return redirect("/api/v1/login")
             else:
-                return user_id.token
+                return token_user_obj.user_id
         except Exception as e:
             logger.error('utils:checklogin', e)
             raise ValueError("checklogin was wrong")
@@ -34,6 +44,20 @@ class BaseResponse():
     @property
     def dict(self):
         return self.__dict__
+
+
+class RandomStrToken():
+    def random_str(self):
+        random_char = random.choice(
+            [chr(random.randint(65, 90)),
+             chr(random.randint(97, 122))])
+        start_str = ""
+        for i in range(5):
+            provisional_str = str(
+                random.randrange(10, 100)) + random_char
+            start_str += provisional_str
+        token = time.asctime() + start_str
+        return token
 
 
 def get_gender(arg):

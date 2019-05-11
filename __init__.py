@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from flask import Flask
 from mongoengine import *
 from flask_mongoengine import MongoEngine
+from flask_cors import CORS
 
 from .loggins import LoggingSet
 db = MongoEngine()
@@ -18,9 +19,6 @@ def create_app():
         'db': 'test',
         'host': 'localhost',
         'port': 27017,
-	'username': 'admin',
-	'password': 'password',
-	'authentication_source': 'admin'
     }
     logger.debug_log(logging.DEBUG)
     logger.error_log(logging.ERROR)
@@ -30,6 +28,7 @@ def create_app():
 
 
 app = create_app()
+CORS(app, resources=r'/*')
 
 
 def register_blueprints(app):
