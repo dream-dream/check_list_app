@@ -4,8 +4,8 @@ import logging
 from flask import request
 from flask.views import MethodView
 
-
 from .models import User, Token
+
 logger = logging.getLogger(__name__)
 
 
@@ -16,10 +16,12 @@ class CheckLogin(MethodView):
         logger.debug("checklogin>>>", user_token)
         try:
             str_token = user_token["forend_token_str"]
+            user_id_token = user_token['user_id']
         except Exception as e:
             logger.error(e)
             raise TypeError("forend could not deliver the token_str")
-        token_user_obj = Token.objects(random_str=str_token).first()
+        token_user_obj = Token.objects(user_id=user_id_token,
+                                       random_str=str_token).first()
         logger.info("check-login", token_user_obj)
         try:
             if token_user_obj is None:
@@ -127,4 +129,3 @@ def get_username(arg):
         logger.error('utils:get-username', e)
         raise ValueError(e)
     return user_obj[0]['username']
-

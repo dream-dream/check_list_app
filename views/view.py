@@ -66,7 +66,7 @@ class Login(MethodView):
                 final_data.code = 200
                 final_data.data = "you are in"
                 final_data.username = username
-                final_data.password = password
+                final_data.user_id = user_id
                 final_data.forend_token_str = str_random_token
                 return jsonify(final_data.dict)
             else:
@@ -114,7 +114,7 @@ class Register(MethodView):
             final_data.data = "sorry, username and telephone and password " \
                               "are required"
             return jsonify(final_data.dict)
-
+        print("register--username",username)
         is_username = User.objects(username=username)
 
         if is_username:
