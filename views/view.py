@@ -193,6 +193,7 @@ class Bill(CheckLogin):
         """
         final_data = BaseResponse()
         request_json = request.json
+        print('request-json', request_json)
         try:
             money = request_json["money"]
             remarks = request_json["remarks"]
@@ -287,7 +288,12 @@ class Bill(CheckLogin):
 class BillList(MethodView):
     def get(self):
         finally_data = BaseResponse()
+        data = request.json
+        # user_id = super(BillList, self).get()
+        print(data)
         try:
+            # start_time = data['start_time']
+            # end_time = data['end_time']
             bill_obj = BillDetail.objects().all()
             sum_money = BillDetail.objects().sum('money')
         except Exception as e:

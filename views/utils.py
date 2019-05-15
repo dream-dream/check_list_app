@@ -12,10 +12,16 @@ logger = logging.getLogger(__name__)
 class CheckLogin(MethodView):
     # for the other interface check is login or not
     def get(self):
-        user_token = request.json
-        logger.debug("checklogin>>>", user_token)
+        method_obj = request.method
+        print('method', method_obj)
+        user_token = request.query_string
+        print('>>>>>>>>', user_token)
+        user_token = user_token.decode('utf8')
+        print("checklogin>request>>", user_token, type(user_token))
+        logger.info("checklogin", user_token)
         try:
-            str_token = user_token["forend_token_str"]
+            str_token = user_token.forend_token_str
+            print("str-token", str_token)
             user_id_token = str_token['user_id']
             user_token = str_token["user_token"]
         except Exception as e:
@@ -129,3 +135,4 @@ def get_username(arg):
         logger.error('utils:get-username', e)
         raise ValueError(e)
     return user_obj[0]['username']
+

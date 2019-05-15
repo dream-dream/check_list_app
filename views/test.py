@@ -69,4 +69,24 @@ def rand_str():
         start_str += provisional_str
     token = time.asctime() + start_str
     return token
-print(rand_str(), len(rand_str()))
+# print(rand_str(), len(rand_str()))
+def get_time_format(arg):
+    """
+    exchange the format of the time
+    :param arg: str of time
+    :return: timestamp
+    """
+    try:
+        format_time_str = time.strptime(arg, "%Y-%m-%d %H:%M:%S")
+    except ValueError as e:
+        # logger.error('utils:get-time-format', e)
+        try:
+            struct_time = time.strptime(arg, "%Y-%m-%d")
+            return time.mktime(struct_time)
+        except Exception as e:
+            # logger.error("utils:get-time-format", e)
+            return ""
+
+
+obj = get_time_format("2019-05-14")
+print(obj,type(obj))
