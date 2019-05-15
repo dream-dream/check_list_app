@@ -16,12 +16,13 @@ class CheckLogin(MethodView):
         logger.debug("checklogin>>>", user_token)
         try:
             str_token = user_token["forend_token_str"]
-            user_id_token = user_token['user_id']
+            user_id_token = str_token['user_id']
+            user_token = str_token["user_token"]
         except Exception as e:
             logger.error(e)
             raise TypeError("forend could not deliver the token_str")
         token_user_obj = Token.objects(user_id=user_id_token,
-                                       random_str=str_token).first()
+                                       random_str=user_token).first()
         logger.info("check-login", token_user_obj)
         try:
             if token_user_obj is None:
@@ -48,18 +49,17 @@ class BaseResponse():
         return self.__dict__
 
 
-class RandomStrToken():
-    def random_str(self):
-        random_char = random.choice(
-            [chr(random.randint(65, 90)),
-             chr(random.randint(97, 122))])
-        start_str = ""
-        for i in range(5):
-            provisional_str = str(
-                random.randrange(10, 100)) + random_char
-            start_str += provisional_str
-        token = time.asctime() + start_str
-        return token
+def random_str():
+    random_char = random.choice(
+        [chr(random.randint(65, 90)),
+         chr(random.randint(97, 122))])
+    start_str = ""
+    for i in range(5):
+        provisional_str = str(
+            random.randrange(10, 100)) + random_char
+        start_str += provisional_str
+    token = time.asctime() + start_str
+    return token
 
 
 def get_gender(arg):

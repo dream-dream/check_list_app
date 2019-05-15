@@ -11,7 +11,7 @@ from ..views.models import User, UserDetail, BillDetail, \
     Token
 from ..response_code import BaseResponse
 from ..views.utils import get_str_time, get_time_format, \
-    get_username, CheckLogin, get_gender, get_salary, RandomStrToken
+    get_username, CheckLogin, get_gender, get_salary, random_str
 
 # Create your views here.
 # put login user id in redis
@@ -44,7 +44,9 @@ class Login(MethodView):
                 # set login status into mongodb
 
                 user_id = user_object.id
-                str_random_token = RandomStrToken()
+                str_random_token = random_str()
+                # logger.debug("login>>>>", str_random_token)
+                print(">>>", str_random_token, type(str_random_token))
                 try:
                     token_obj = Token.objects(random_str=str_random_token).first()
                 except Exception as e:
@@ -53,7 +55,7 @@ class Login(MethodView):
                     logger.error("login", final_data.dict)
                     return jsonify(final_data.dict)
                 if token_obj:
-                    str_random_token = RandomStrToken()
+                    str_random_token = random_str()
                 try:
                     user_token = Token(user_id=user_id,
                                        random_str=str_random_token)
@@ -66,7 +68,7 @@ class Login(MethodView):
                 final_data.code = 200
                 final_data.data = "you are in"
                 final_data.username = username
-                final_data.user_id = user_id
+                final_data.user_id = str(user_id)
                 final_data.forend_token_str = str_random_token
                 return jsonify(final_data.dict)
             else:
